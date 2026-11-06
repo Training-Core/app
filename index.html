@@ -594,20 +594,20 @@ button:active{transform:scale(.97)}
 @keyframes spin{to{transform:rotate(360deg)}}
 .dateline{color:var(--muted);font-size:15px}
 .aiic{display:block;overflow:visible;width:100%;height:100%}
-.aiic .arm path{fill:none;stroke:var(--ic,var(--lime));stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
-.aiic .brn path{fill:none;stroke:var(--ic2,color-mix(in srgb,var(--lime) 40%,#2FD9A0));stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
-.aiic .dot{fill:var(--ic2,color-mix(in srgb,var(--lime) 40%,#2FD9A0))}
+.aiic .fig *{fill:none;stroke:var(--ic,var(--lime));stroke-width:3.6;stroke-linecap:round;stroke-linejoin:round}
 .aiic.glow{filter:drop-shadow(0 0 1.5px var(--ic,var(--lime))) drop-shadow(0 0 5px color-mix(in srgb,var(--ic,var(--lime)) 55%,transparent))}
 .aiic .fa,.aiic .bic{transform-box:view-box}
-.aiic .fa{transform-origin:9px 43px}.aiic .bic{transform-origin:31px 37px}
-.aiic.anim .fa{animation:aiCurl 1.2s ease-in-out infinite}
-.aiic.anim .bic{animation:aiBulge 1.2s ease-in-out infinite}
-@keyframes aiCurl{0%,100%{transform:rotate(14deg)}50%{transform:rotate(-9deg)}}
-@keyframes aiBulge{0%,100%{transform:scale(.8)}50%{transform:scale(1.18)}}
+.aiic .fl{transform-origin:8px 43px}.aiic .fr{transform-origin:92px 43px}
+.aiic .bl{transform-origin:26px 32px}.aiic .br{transform-origin:74px 32px}
+.aiic.anim .fl{animation:aiFl 1.2s ease-in-out infinite}.aiic.anim .fr{animation:aiFr 1.2s ease-in-out infinite}
+.aiic.anim .bic{animation:aiBic 1.2s ease-in-out infinite}
+@keyframes aiFl{0%,100%{transform:rotate(-9deg)}50%{transform:rotate(6deg)}}
+@keyframes aiFr{0%,100%{transform:rotate(9deg)}50%{transform:rotate(-6deg)}}
+@keyframes aiBic{0%,100%{transform:scale(.85)}50%{transform:scale(1.15)}}
 @media (prefers-reduced-motion:reduce){.aiic.anim .fa,.aiic.anim .bic{animation:none}}
-.aisp .aiic{width:34px;height:34px}
-.aiorb span .aiic{width:54px;height:54px}
-.ainic{width:22px;height:22px;flex:none}
+.aisp .aiic{width:42px;height:34px}
+.aiorb span .aiic{width:62px;height:50px}
+.ainic{width:26px;height:21px;flex:none}
 </style>
 <script>
 /* tema (v12) — aplicado antes de pintar a tela */
@@ -1766,7 +1766,7 @@ function openMenu(){
     ${AUTH?mItem('mSync',IC.sync,'Sincronizar',syncText()):mItem('mLogin',IC.user,'Entrar com e-mail','Salvar na nuvem')}
     ${mItem('mQuiz',IC.target,'Refazer meu perfil','Objetivo, nível e rotina')}
     ${AUTH?mItem('mOut',IC.out,'Sair deste aparelho','','red'):''}
-    <div class="mfoot">Meu Treino · v12.1</div>`;
+    <div class="mfoot">Meu Treino · v12.2</div>`;
   const b=document.getElementById('menuBtn');if(b){const r=b.getBoundingClientRect();menuEl.style.top=Math.max(8,r.bottom+8)+'px';menuEl.style.right=Math.max(12,innerWidth-r.right)+'px';b.setAttribute('aria-expanded','true')}
   menuEl.classList.add('open');mscrim.classList.add('open');
   const q=id=>document.getElementById(id);const act=(id,f)=>{if(q(id))q(id).onclick=()=>{closeMenu();setTimeout(f,120)}};
@@ -2442,11 +2442,7 @@ function storyFallback(file,s){
   const b=document.getElementById('stSh');if(b)b.onclick=async()=>{try{await navigator.share({files:[file]})}catch(e){}};
 }
 
-const AIIC_SVG=(cls='',st='')=>`<svg class="aiic ${cls}" style="${st}" viewBox="0 0 64 64" aria-hidden="true"><g class="arm">
-<g class="fa"><path d="M15 9 Q15 4 20 4 L26 5 Q30 6 29.5 11 Q29.5 16 25.5 18.5 L17 18.5 Q14 16 15 9Z"/><path d="M19 10 L25 10"/><path d="M18.5 14 L25 14"/><path d="M16.5 18.5 Q10 30 8.5 41"/><path d="M25 18.5 Q23.5 28 22 36.5"/></g>
-<path d="M8.5 41 Q8 50 17 50 L39 50"/><path class="bic" d="M22 36.5 Q26.5 24.5 33.5 28 Q39 31 40 37.5"/></g>
-<g class="brn"><path d="M41.5 33 Q40.5 25 47 24 Q51 20.5 56 24 Q62 25 61 32 Q64 37 60 42 Q60 49 53 49 Q49 52.5 44.5 49 Q38.5 48 39.5 42 Q37 37 41.5 33Z"/><path d="M50.5 24 L50.5 31.5 L45.5 35.5"/><path d="M50.5 31.5 L56 34.5 L56 40.5"/><path d="M45.5 42 L50.5 42 L52.5 46.5"/></g>
-<circle class="dot" cx="45.5" cy="35.5" r="1.7"/><circle class="dot" cx="56" cy="40.5" r="1.7"/><circle class="dot" cx="52.5" cy="46.5" r="1.7"/></svg>`;
+const AIIC_SVG=(cls='',st='')=>`<svg class="aiic ${cls}" style="${st}" viewBox="0 0 100 80" aria-hidden="true"><g class="fig"><circle cx="50" cy="18" r="7.5"/><path d="M45.5 25 L44.5 27 M54.5 25 L55.5 27"/><g class="fa fl"><path d="M19 15 Q19.5 21 20.5 28 M9.5 14.5 Q5 26 5.5 39"/><path d="M9.5 14.5 Q7 8 11 4.5 Q16 1.5 20.5 5 Q23.5 8.5 20.5 13.5 Q19.5 15.5 15 15.5 Q11 15.5 9.5 14.5Z"/></g><g class="bic bl"><path d="M20.5 28 Q20.5 14 30 15.5 Q40 17.5 35.5 33"/></g><path d="M44.5 27 Q40.5 31.5 35.5 33 M5.5 39 Q5.5 47 14 47.5 Q24 48 29.5 47 Q32.5 49 33 54 Q35 66 39.5 78"/><g class="fa fr"><path d="M81 15 Q80.5 21 79.5 28 M90.5 14.5 Q95 26 94.5 39"/><path d="M90.5 14.5 Q93 8 89 4.5 Q84 1.5 79.5 5 Q76.5 8.5 79.5 13.5 Q80.5 15.5 85 15.5 Q89 15.5 90.5 14.5Z"/></g><g class="bic br"><path d="M79.5 28 Q79.5 14 70 15.5 Q60 17.5 64.5 33"/></g><path d="M55.5 27 Q59.5 31.5 64.5 33 M94.5 39 Q94.5 47 86 47.5 Q76 48 70.5 47 Q67.5 49 67 54 Q65 66 60.5 78"/></g></svg>`;
 
 /* ================= IA (v11) — monta fichas via Supabase Edge Function ================= */
 const AI_FN=SB_URL+'/functions/v1/gerar-ficha';
@@ -2501,7 +2497,7 @@ function renderAI(){
   clearInterval(aiMsgT);const q=id=>document.getElementById(id);
   const back=`<div class="top"><button class="rbtn glass" id="aiB" aria-label="Voltar">${I.back}</button><span></span></div>`;
   if(AIS.st==='load'){
-    app.innerHTML=`${back}<div class="aiload"><div class="aiorb"><i></i><i></i><i></i><span>${AIIC_SVG('anim glow','--ic:#fff;--ic2:#D6FFF0')}</span></div>
+    app.innerHTML=`${back}<div class="aiload"><div class="aiorb"><i></i><i></i><i></i><span>${AIIC_SVG('anim glow','--ic:#fff')}</span></div>
       <h1 class="qq" style="text-align:center">Montando sua ficha</h1><p class="qsub aimsg" id="aiMsg" style="text-align:center">${AIMSG[0]}…</p>
       <div class="tchips aichips">${aiChips().map((c,i)=>`<span style="--i:${i}">${esc(c)}</span>`).join('')}</div></div>`;
     let n=0;aiMsgT=setInterval(()=>{const m=q('aiMsg');if(!m||AIS.st!=='load'){clearInterval(aiMsgT);return}n=(n+1)%AIMSG.length;m.classList.remove('in');void m.offsetWidth;m.textContent=AIMSG[n]+'…';m.classList.add('in')},2200);
