@@ -504,6 +504,36 @@ button:active{transform:scale(.97)}
 .bmibar i{position:absolute;top:-5px;width:6px;height:20px;margin-left:-3px;border-radius:3px;background:#fff;box-shadow:0 0 0 2px var(--bg)}
 .bmil{position:relative;height:16px;font-size:11px;color:var(--muted);margin:6px 8px 0}
 .bmil span{position:absolute;transform:translateX(-50%)}
+/* v11: pegadas, stories, IA */
+.vtag{display:inline-flex;align-items:center;gap:4px;margin-top:5px;font-size:12.5px;font-weight:600;color:var(--lime);background:rgba(184,255,44,.1);border-radius:99px;padding:3px 10px;line-height:1.3}
+.vbtn{width:100%;display:flex;align-items:center;gap:12px;margin-top:12px;padding:12px 14px;border-radius:18px;background:var(--card);border:1px solid var(--line);text-align:left;color:var(--text)}
+.vbtn small{display:block;font-size:12px;color:var(--muted)}.vbtn b{font-size:16.5px;font-weight:600}.vbtn .vi{font-size:22px;flex:none}.vbtn .vt{color:var(--lime);font-weight:700;font-size:14px;flex:none}
+.vopt small{display:block;color:var(--muted);font-size:13.5px;font-weight:400;line-height:1.35;margin-top:3px}.vopt b{font-weight:600}
+.vlist{margin-top:10px}.vlist .lrow small{display:block;color:var(--muted);font-size:13px;font-weight:400;margin-top:2px;white-space:normal}
+.bigcta.story{background:linear-gradient(100deg,#B8FF2C,#7CF5C8);}
+.fld textarea{width:100%;border:0;background:none;outline:none;font-size:16px;padding:4px 0;resize:none;color:var(--text);font-family:inherit;line-height:1.4}
+.ainote{display:flex;gap:8px;align-items:flex-start;margin:14px 0 0;padding:10px 12px;border-radius:14px;background:rgba(184,255,44,.07);border:1px solid rgba(184,255,44,.2);font-size:13px;color:var(--muted);line-height:1.4}
+.ainote b{color:var(--text);font-weight:600}
+.aicard{display:flex;align-items:center;gap:14px;width:100%;text-align:left;margin-top:16px;padding:16px;border-radius:24px;color:var(--text);border:1px solid rgba(184,255,44,.5);background:radial-gradient(130% 120% at 0% 0%,rgba(184,255,44,.2),transparent 60%),var(--card)}
+.aicard .aisp{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;font-size:26px;background:rgba(184,255,44,.15);flex:none}
+.aicard b{display:block;font-size:17px;font-weight:700}.aicard small{display:block;color:var(--muted);font-size:13.5px;margin-top:3px;line-height:1.35}
+.aiload{display:flex;flex-direction:column;align-items:center;padding-top:7vh}
+.aiorb{position:relative;width:150px;height:150px;margin-bottom:26px;display:grid;place-items:center}
+.aiorb i{position:absolute;inset:0;border-radius:50%;border:2px solid rgba(184,255,44,.5);animation:aiPulse 2.4s ease-out infinite}
+.aiorb i:nth-child(2){animation-delay:.8s}.aiorb i:nth-child(3){animation-delay:1.6s}
+.aiorb span{width:84px;height:84px;border-radius:50%;display:grid;place-items:center;font-size:38px;background:radial-gradient(circle at 35% 30%,#d9ff8a,#B8FF2C 55%,#6fa810);box-shadow:0 0 60px rgba(184,255,44,.45);animation:aiBob 2.4s ease-in-out infinite}
+@keyframes aiPulse{0%{transform:scale(.55);opacity:1}100%{transform:scale(1.25);opacity:0}}
+@keyframes aiBob{50%{transform:scale(1.06)}}
+.aimsg.in{animation:inF .4s both}
+.aichips{justify-content:center;margin-top:22px;max-width:340px}
+.aichips span{padding:7px 12px;border-radius:99px;background:var(--card);border:1px solid var(--line);font-size:13px;color:var(--muted);animation:rise .5s both;animation-delay:calc(var(--i)*.25s)}
+.aisum{margin-top:14px;padding:14px 16px;border-radius:20px;background:rgba(184,255,44,.07);border:1px solid rgba(184,255,44,.22);font-size:15px;line-height:1.5}
+.aific{margin-top:14px;background:var(--card);border:1px solid var(--line);border-radius:24px;padding:14px}
+.aifh{display:flex;align-items:center;gap:12px}.aifh .nm{font-weight:600;font-size:17px}.aifh .meta{font-size:13.5px;color:var(--muted);margin-top:2px}
+.aifoco{margin:10px 2px 4px;font-size:14px;color:var(--muted);line-height:1.4}
+.aiex{display:flex;align-items:center;gap:12px;padding:9px 0;border-top:1px solid var(--line)}.aiex:first-of-type{border-top:0}
+.aiex b{display:block;font-weight:600;font-size:15px}.aiex span{font-size:13.5px;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){.aiorb i,.aiorb span,.aichips span{animation:none}}
 </style>
 </head>
 <body>
@@ -585,6 +615,129 @@ const norm=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u03
 
 /* ================= biblioteca ================= */
 const LIBX={};LIBRAW.forEach(([k,n,slot,eq,t])=>LIBX[k]={k,n,slot,eq,t});
+/* ================= pegadas / variações por aparelho (v11) ================= */
+const VG={
+ pressMaq:[['neutra','Pegada neutra','Palmas viradas uma para a outra. Mais tríceps e menos estresse no ombro; costuma ser a mais confortável.'],['pronada','Pegada pronada','Pegada horizontal, cotovelos mais abertos. Mais peitoral médio e porção externa.'],['fechada','Pegada fechada','Mãos mais próximas. Mais peitoral interno e tríceps.'],['bancoalto','Banco mais alto','A pegada fica mais baixa em relação ao peito. Ênfase no peitoral inferior.'],['bancobaixo','Banco mais baixo','A pegada fica mais alta em relação ao peito. Ênfase no peitoral superior.'],['uni','Unilateral','Um braço por vez. Corrige diferenças entre os lados e aumenta a concentração.']],
+ pressInc:[['neutra','Pegada neutra','Mais confortável para o ombro, mais tríceps.'],['pronada','Pegada pronada','Cotovelos abertos. Mais peitoral superior.'],['fechada','Pegada fechada','Mais peitoral interno e tríceps.'],['uni','Unilateral','Um braço por vez.']],
+ pressDec:[['neutra','Pegada neutra','Mais confortável para o ombro.'],['pronada','Pegada pronada','Mais peitoral inferior e externo.']],
+ pressCabo:[['neutra','Pegada neutra','Mais confortável para o ombro.'],['pronada','Pegada pronada','Cotovelos abertos. Peitoral médio.'],['baixo','Empurrando para cima','Ênfase no peitoral superior.'],['uni','Unilateral','Um braço por vez.']],
+ halterPress:[['pronada','Pegada pronada','Padrão, cotovelos a uns 45°. Peitoral como um todo.'],['neutra','Pegada neutra','Palmas viradas uma para a outra. Mais confortável para o ombro e mais tríceps.'],['squeeze','Squeeze press','Halteres encostados um no outro o tempo todo. Foco no peitoral interno.'],['alt','Alternado','Um braço por vez enquanto o outro segura em cima. Mais tempo sob tensão.']],
+ barraPress:[['media','Pegada média','Mãos um pouco além dos ombros. Peitoral como um todo.'],['aberta','Pegada aberta','Mais peitoral e menos tríceps. Exige mais do ombro.'],['fechada','Pegada fechada','Mãos na largura dos ombros. Mais tríceps e peitoral interno.']],
+ flyMaq:[['manopla','Manoplas, braços quase estendidos','Padrão. Maior alongamento do peitoral.'],['antebraco','Apoio nos antebraços','Cotovelos a 90° nas almofadas. Menos bíceps e ombro, mais fácil sentir o peito.'],['uni','Unilateral','Um braço por vez, cruzando a linha do corpo. Peitoral interno.']],
+ cross:[['alto','Polia alta, para baixo','Puxa de cima para baixo. Ênfase no peitoral inferior.'],['medio','Polia média','Na altura do peito. Peitoral médio.'],['baixo','Polia baixa, para cima','Puxa de baixo para cima. Ênfase no peitoral superior.'],['uni','Unilateral cruzando','Leva a mão além da linha do corpo. Peitoral interno.']],
+ flyHalter:[['neutra','Pegada neutra','Padrão, palmas viradas uma para a outra.'],['gira','Girando as mãos no topo','Mindinhos se aproximam no final. Mais contração do peitoral interno.']],
+ flyCabo:[['neutra','Pegada neutra','Padrão.'],['uni','Unilateral','Um braço por vez, mais amplitude.']],
+ flexao:[['padrao','Mãos na largura dos ombros','Peitoral, ombro e tríceps equilibrados.'],['aberta','Mãos abertas','Mais peitoral.'],['diamante','Fechada (diamante)','Mãos juntas embaixo do peito. Foco no tríceps.'],['pes','Pés elevados','Ênfase no peitoral superior e ombro.'],['joelhos','Apoiado nos joelhos','Versão mais leve para pegar a técnica.']],
+ paralela:[['peito','Tronco inclinado à frente','Cotovelos abertos. Mais peitoral inferior.'],['triceps','Tronco reto','Cotovelos junto ao corpo. Mais tríceps.'],['assistida','Assistida','Na máquina ou com elástico.']],
+ puxAberta:[['aberta','Aberta pronada','Mãos bem afastadas. Foco na largura das costas (dorsais).'],['media','Pronada média','Mãos um pouco além dos ombros. Mais amplitude, dorsais e bíceps.'],['neutra','Neutra (pegadores paralelos)','Palmas viradas uma para a outra. Mais confortável para ombro e punho.'],['supinada','Supinada','Palmas para você. Mais dorsal inferior e bíceps.']],
+ puxFechada:[['supinada','Supinada fechada','Mais dorsal inferior e bíceps.'],['triangulo','Triângulo (neutra fechada)','Confortável; foco na parte de baixo das costas.'],['neutra','Neutra larga','Pegadores paralelos afastados. Dorsais com menos estresse no ombro.']],
+ puxUni:[['neutra','Pegada neutra','Padrão. Cotovelo desce colado ao corpo: dorsal.'],['pronada','Pegada pronada','Cotovelo mais aberto. Parte alta das costas.'],['supinada','Pegada supinada','Mais alongamento da dorsal e bíceps.']],
+ barraFixa:[['aberta','Pronada aberta','Clássica. Largura das costas.'],['supinada','Supinada (chin-up)','Mais bíceps e dorsal inferior; costuma ser mais fácil.'],['neutra','Neutra','Mais confortável para ombros e punhos.'],['assistida','Assistida','Na máquina ou com elástico.']],
+ pullover:[['barra','Barra reta','Padrão. Dorsais com braços estendidos.'],['corda','Corda','Mais amplitude, abrindo a corda junto ao quadril.'],['uni','Unilateral','Um braço por vez, com pegador.']],
+ remArt:[['neutra','Pegada neutra (vertical)','Cotovelos junto ao corpo. Mais dorsal (latíssimo).'],['pronada','Pegada pronada (horizontal)','Cotovelos abertos. Mais costas alta: romboides, trapézio médio e posterior de ombro.'],['uni','Unilateral','Um braço por vez. Mais amplitude e corrige diferenças entre os lados.']],
+ remCabo:[['triangulo','Triângulo','Pegada neutra fechada. Dorsais, puxando para a barriga.'],['barra','Barra aberta pronada','Cotovelos para fora. Costas alta e posterior de ombro.'],['supinada','Barra supinada','Palmas para cima. Dorsal inferior e bíceps.'],['corda','Corda','Abre a corda no final. Costas alta e posterior de ombro.']],
+ remHalter:[['colado','Cotovelo colado','Puxa em direção ao quadril. Mais dorsal.'],['aberto','Cotovelo aberto','Puxa em direção ao peito. Costas alta e posterior de ombro.']],
+ remHalter2:[['neutra','Pegada neutra','Cotovelos colados. Mais dorsal.'],['pronada','Pegada pronada','Cotovelos abertos. Costas alta.'],['supinada','Pegada supinada','Mais dorsal inferior e bíceps.']],
+ remBarra:[['pronada','Pegada pronada','Costas alta, trapézio médio e romboides.'],['supinada','Pegada supinada','Mais dorsal inferior e bíceps.']],
+ tbar:[['fechada','Pegada fechada (neutra)','Dorsais e meio das costas.'],['aberta','Pegada aberta (pronada)','Costas alta e posterior de ombro.']],
+ desenvMaq:[['neutra','Pegada neutra','Palmas para dentro. Mais confortável para o ombro; mais deltoide frontal e tríceps.'],['pronada','Pegada pronada','Pegada horizontal, cotovelos abertos. Mais deltoide lateral.'],['uni','Unilateral','Um braço por vez.']],
+ desenvHalter:[['pronada','Pegada pronada','Padrão, cotovelos ao lado do corpo.'],['neutra','Pegada neutra','Palmas viradas uma para a outra, cotovelos à frente. Mais confortável para o ombro.'],['empe','Em pé','Mais trabalho de core e estabilidade.']],
+ desenvUni:[['pronada','Pegada pronada','Padrão.'],['neutra','Pegada neutra','Mais confortável para o ombro.']],
+ desenvBarra:[['sentado','Sentado','Padrão, com encosto.'],['empe','Em pé','Mais core e estabilidade.']],
+ elevLat:[['empe','Em pé','Padrão.'],['sentado','Sentado','Tira o impulso do corpo, mais isolado.'],['inclinado','Tronco levemente à frente','Mais deltoide lateral e posterior, menos trapézio.'],['banco','Deitado de lado no banco inclinado','Mais tensão no início do movimento.']],
+ elevLatCabo:[['atras','Cabo por trás do corpo','Mais tensão no deltoide lateral desde o início.'],['frente','Cabo pela frente','Mais confortável; um pouco mais de deltoide frontal.'],['punho','No punho, sem pegador','Tira o antebraço do movimento.']],
+ elevFront:[['pronada','Pegada pronada','Padrão. Deltoide frontal.'],['neutra','Pegada neutra (martelo)','Mais confortável para o ombro.'],['alternada','Alternada','Um braço por vez.']],
+ elevFrontCabo:[['barra','Barra reta','Os dois braços juntos.'],['corda','Corda','Pegada neutra, mais confortável.'],['uni','Unilateral','Um braço por vez.']],
+ remAlta:[['aberta','Pegada aberta','Mãos afastadas. Mais deltoide lateral e menos estresse no ombro.'],['fechada','Pegada fechada','Mais trapézio. Suba só até a linha do peito.'],['corda','Corda','Mais liberdade para os punhos.']],
+ remAltaB:[['aberta','Pegada aberta','Mãos afastadas. Mais deltoide lateral e menos estresse no ombro.'],['fechada','Pegada fechada','Mais trapézio. Suba só até a linha do peito.']],
+ flyDorsal:[['pronada','Pegada pronada (horizontal)','Cotovelos altos. Mais deltoide posterior.'],['neutra','Pegada neutra (vertical)','Mais romboides e trapézio médio.'],['uni','Unilateral','Um braço por vez, de lado para a máquina.']],
+ facePull:[['corda','Corda na altura dos olhos','Padrão. Posterior de ombro e trapézio médio.'],['supinada','Pegada por baixo (supinada)','Mais rotação externa; ótimo para a saúde do ombro.'],['baixo','Polia baixa, puxando para cima','Mais trapézio médio e inferior.']],
+ cruzInv:[['neutra','Pegada neutra','Padrão.'],['pronada','Pegada pronada','Polegares para dentro. Mais deltoide posterior.'],['apoiado','Peito apoiado no banco inclinado','Tira a lombar e o impulso.']],
+ cruzInvCabo:[['cruzado','Cabos cruzados','Padrão, segurando os cabos sem pegador.'],['uni','Unilateral','Um braço por vez.']],
+ encHalter:[['lado','Halteres ao lado','Padrão, pegada neutra.'],['frente','Halteres à frente','Pegada pronada. Mais trapézio médio.'],['pausa','Pausa de 2 s no topo','Mais contração.']],
+ encBarra:[['frente','Barra pela frente','Padrão.'],['atras','Barra por trás','Mais trapézio médio.'],['aberta','Pegada aberta','Mais trapézio médio e menos braço.']],
+ encMaq:[['neutra','Padrão','Pegada neutra.'],['pausa','Pausa de 2 s no topo','Mais contração.']],
+ encCabo:[['barra','Barra','Os dois lados juntos.'],['uni','Unilateral','Um lado por vez, com mais amplitude.']],
+ roscaW:[['fechada','Pegada fechada','Mãos na parte interna da barra. Mais cabeça longa (parte externa do bíceps).'],['aberta','Pegada aberta','Mãos na parte externa. Mais cabeça curta (parte interna).'],['inversa','Pegada pronada (rosca inversa)','Palmas para baixo. Braquiorradial e antebraço.']],
+ roscaBarra:[['media','Pegada média','Largura dos ombros.'],['fechada','Pegada fechada','Mais cabeça longa (parte externa).'],['aberta','Pegada aberta','Mais cabeça curta (parte interna).'],['inversa','Pegada pronada (rosca inversa)','Braquiorradial e antebraço.']],
+ martelo:[['paralela','Ao lado do corpo','Padrão. Braquial e braquiorradial: braço mais "grosso".'],['cruzada','Cruzada, em direção ao peito','Mais braquial.'],['simult','Simultânea','Os dois braços juntos, mais carga.']],
+ marteloCorda:[['paralela','Padrão','Corda com pegada neutra.'],['uni','Unilateral','Um braço por vez.']],
+ roscaAlt:[['supinada','Supinada desde o início','Palmas para frente o tempo todo.'],['rotacao','Com rotação','Começa neutra e gira no caminho. Pico de contração do bíceps.'],['simult','Simultânea','Os dois braços juntos.']],
+ roscaMaq:[['supinada','Pegada supinada','Padrão.'],['neutra','Pegada neutra','Mais braquial.'],['uni','Unilateral','Um braço por vez.']],
+ scott:[['w','Barra W','Mais confortável para o punho.'],['reta','Barra reta','Máxima supinação.'],['uni','Unilateral com halter','Um braço por vez.'],['martelo','Martelo','Braquial.']],
+ roscaCabo:[['reta','Barra reta','Padrão.'],['w','Barra W','Mais confortável para o punho.'],['uni','Unilateral','Um braço por vez.'],['bayesian','De costas para a polia (bayesian)','Braço atrás do corpo: bíceps alongado, ótimo para a cabeça longa.']],
+ roscaConc:[['supinada','Supinada','Padrão. Pico do bíceps.'],['martelo','Martelo','Braquial.']],
+ roscaInc:[['supinada','Supinada','Cabeça longa bem alongada.'],['martelo','Martelo','Braquial, mais confortável.']],
+ spider:[['w','Barra W','Padrão.'],['halteres','Halteres','Cada braço trabalha sozinho.']],
+ tricCorda:[['abre','Abrindo a corda no fim','Mais cabeça lateral (parte de fora do tríceps).'],['junto','Sem abrir','Mais carga.'],['uni','Unilateral','Um braço por vez.']],
+ tricBarra:[['pronada','Pegada pronada','Padrão. Cabeça lateral.'],['supinada','Pegada supinada (inversa)','Cabeça medial; use menos carga.'],['w','Barra W','Mais confortável para o punho.']],
+ tricV:[['v','Barra V','Padrão.'],['reta','Barra reta','Mais cabeça lateral.']],
+ tricInv:[['barra','Barra reta','Padrão.'],['uni','Unilateral','Um braço por vez, com pegador.']],
+ tricUni:[['pronada','Pegada pronada','Padrão.'],['supinada','Pegada supinada','Cabeça medial.'],['cruzado','Cruzando à frente do corpo','Tensão diferente, mais cabeça lateral.']],
+ tricFrances:[['corda','Corda','Padrão, de costas para a polia. Cabeça longa alongada.'],['barra','Barra W ou reta','Mais carga.'],['uni','Unilateral','Um braço por vez.']],
+ tricFrancesH:[['dois','Com as duas mãos','Um halter só, segurando pela anilha.'],['uni','Unilateral','Um halter por braço.'],['sentado','Sentado com encosto','Protege a lombar.']],
+ testa:[['testa','Até a testa','Padrão.'],['atras','Atrás da cabeça','Mais alongamento: cabeça longa do tríceps.'],['halteres','Halteres pegada neutra','Mais confortável para cotovelos e punhos.']],
+ testaCabo:[['barra','Barra','Padrão.'],['corda','Corda','Pegada neutra.']],
+ tricMaq:[['neutra','Pegada neutra','Padrão.'],['pronada','Pegada pronada','Cabeça lateral.']],
+ coice:[['neutra','Pegada neutra','Padrão.'],['pronada','Girando a mão no topo','Mais contração.'],['cabo','No cabo','Tensão constante.']],
+ supFechado:[['ombros','Mãos na largura dos ombros','Padrão.'],['w','Barra W','Mais confortável para o punho.']],
+ banco:[['dobrado','Joelhos dobrados','Mais fácil.'],['estendido','Pernas estendidas','Mais difícil.'],['pes','Pés elevados','Ainda mais difícil.']],
+ legPress:[['meio','Pés no meio','Padrão. Quadríceps e glúteo.'],['altos','Pés altos','Mais glúteo e posterior de coxa.'],['baixos','Pés baixos','Mais quadríceps (exige boa mobilidade do tornozelo).'],['sumo','Pés afastados, pontas para fora','Mais adutores e glúteo.'],['juntos','Pés juntos','Mais parte de fora da coxa.'],['uni','Unilateral','Uma perna por vez.']],
+ hack:[['meio','Pés no meio','Padrão.'],['baixos','Pés baixos','Mais quadríceps.'],['altos','Pés altos','Mais glúteo.'],['reverso','De frente para a máquina','Mais glúteo e posterior.']],
+ smithSq:[['frente','Pés à frente','Mais glúteo, tronco mais reto.'],['baixo','Pés embaixo do corpo','Mais quadríceps.'],['sumo','Afastados (sumô)','Mais adutores e glúteo.']],
+ agach:[['alta','Barra alta','Mais quadríceps, tronco mais reto.'],['baixa','Barra baixa','Mais glúteo e posterior.'],['sumo','Sumô','Mais adutores.']],
+ goblet:[['padrao','Pés na largura dos ombros','Padrão.'],['sumo','Sumô','Mais adutores e glúteo.'],['calcanhar','Calcanhar elevado','Mais quadríceps.']],
+ afundo:[['curto','Passo curto','Mais quadríceps.'],['longo','Passo longo','Mais glúteo.'],['incl','Tronco inclinado à frente','Mais glúteo.']],
+ extensora:[['padrao','Padrão','Pés neutros.'],['uni','Unilateral','Uma perna por vez.'],['recl','Encosto mais reclinado','Mais reto femoral.'],['pausa','Pausa no topo','Mais contração do quadríceps.']],
+ flexora:[['dorsi','Pés puxados para cima','Mais força, com ajuda da panturrilha.'],['ponta','Pés em ponta','Isola mais os posteriores.'],['dentro','Pontas para dentro','Mais parte interna do posterior.'],['fora','Pontas para fora','Mais bíceps femoral (parte externa).'],['uni','Unilateral','Uma perna por vez.']],
+ flexoraUni:[['dorsi','Pé puxado para cima','Mais força.'],['ponta','Pé em ponta','Isola mais os posteriores.'],['dentro','Ponta para dentro','Mais parte interna.'],['fora','Ponta para fora','Mais parte externa.']],
+ stiff:[['padrao','Pés na largura do quadril','Padrão.'],['afastado','Pés mais afastados','Mais glúteo e adutor.'],['uni','Unilateral','Uma perna por vez; mais equilíbrio e glúteo.']],
+ stiffB:[['padrao','Pés na largura do quadril','Padrão.'],['afastado','Pés mais afastados','Mais glúteo e adutor.']],
+ hipT:[['padrao','Padrão','Pés na largura do quadril.'],['perto','Pés mais perto','Mais quadríceps junto com glúteo.'],['longe','Pés mais longe','Mais posterior de coxa.'],['pausa','Pausa de 2 s no topo','Mais contração do glúteo.'],['uni','Unilateral','Uma perna por vez.']],
+ kickback:[['estendida','Perna estendida','Glúteo máximo.'],['diagonal','Para trás e para o lado','Mais glúteo médio.'],['flex','Joelho flexionado','Menos posterior, mais glúteo.']],
+ abdutora:[['reto','Tronco encostado','Glúteo médio.'],['frente','Tronco inclinado à frente','Mais glúteo máximo (parte de cima).'],['pausa','Pausa aberta','Segura 1 a 2 s com as pernas abertas.']],
+ adutora:[['reto','Tronco encostado','Padrão.'],['frente','Tronco inclinado à frente','Mais amplitude.']],
+ panturrilha:[['neutra','Pontas retas','Padrão.'],['fora','Pontas para fora','Mais parte interna da panturrilha.'],['dentro','Pontas para dentro','Mais parte externa da panturrilha.'],['pausa','Pausa embaixo','Segura 2 s alongado, sem impulso.']],
+ absCabo:[['ajoelhado','Ajoelhado','Padrão.'],['empe','Em pé','Mais difícil de estabilizar.'],['obliquo','Girando para os lados','Mais oblíquos.']],
+ elevPernas:[['joelhos','Joelhos dobrados','Mais fácil.'],['estendidas','Pernas estendidas','Mais difícil, mais infra.'],['obliquo','Levando para os lados','Mais oblíquos.']],
+ prancha:[['antebraco','Nos antebraços','Padrão.'],['maos','Nas mãos','Braços estendidos.'],['elevado','Pés elevados','Mais difícil.']],
+ pranchaLat:[['pes','Nos pés','Padrão.'],['joelhos','Nos joelhos','Mais fácil.'],['quadril','Subindo e descendo o quadril','Mais oblíquo.']],
+ russian:[['chao','Pés no chão','Mais fácil.'],['elevado','Pés elevados','Mais difícil.']],
+ lenhador:[['alto','De cima para baixo','Padrão.'],['baixo','De baixo para cima','Mais oblíquo superior e ombro.'],['horizontal','Horizontal','Mais anti-rotação.']],
+ pallof:[['empe','Em pé','Padrão.'],['ajoelhado','Ajoelhado','Mais isolado.']],
+ tuck:[['bola','Com medicine ball','Padrão, segurando a bola.'],['sem','Sem peso','Mais leve.'],['banco','Sentado no banco','Mais amplitude.']]
+};
+const VMAP={pressMaq:['Leverage_Chest_Press','Machine_Bench_Press'],pressInc:['Leverage_Incline_Chest_Press','Incline_Cable_Chest_Press'],pressDec:['Leverage_Decline_Chest_Press'],pressCabo:['Cable_Chest_Press'],
+ halterPress:['Dumbbell_Bench_Press','Incline_Dumbbell_Press'],barraPress:['Barbell_Bench_Press_-_Medium_Grip','Barbell_Incline_Bench_Press_-_Medium_Grip'],flyMaq:['Butterfly'],cross:['Cable_Crossover'],flyHalter:['Dumbbell_Flyes','Incline_Dumbbell_Flyes'],flyCabo:['Incline_Cable_Flye','Flat_Bench_Cable_Flyes'],flexao:['Pushups'],paralela:['Dips_-_Chest_Version'],
+ puxAberta:['Wide-Grip_Lat_Pulldown'],puxFechada:['Close-Grip_Front_Lat_Pulldown','V-Bar_Pulldown'],puxUni:['One_Arm_Lat_Pulldown'],barraFixa:['Pullups'],pullover:['Straight-Arm_Pulldown'],
+ remArt:['Leverage_Iso_Row','Leverage_High_Row'],remCabo:['Seated_Cable_Rows'],remHalter:['One-Arm_Dumbbell_Row','Dumbbell_Incline_Row','Seated_One-arm_Cable_Pulley_Rows'],remHalter2:['Bent_Over_Two-Dumbbell_Row'],remBarra:['Bent_Over_Barbell_Row','Smith_Machine_Bent_Over_Row'],tbar:['T-Bar_Row_with_Handle'],
+ desenvMaq:['Leverage_Shoulder_Press','Machine_Shoulder_Military_Press','Seated_Cable_Shoulder_Press'],desenvHalter:['Dumbbell_Shoulder_Press'],desenvUni:['Dumbbell_One-Arm_Shoulder_Press'],desenvBarra:['Barbell_Shoulder_Press'],
+ elevLat:['Side_Lateral_Raise'],elevLatCabo:['Cable_Seated_Lateral_Raise'],elevFront:['Front_Dumbbell_Raise'],elevFrontCabo:['Front_Cable_Raise'],remAlta:['Upright_Cable_Row'],remAltaB:['Upright_Barbell_Row'],
+ flyDorsal:['Reverse_Machine_Flyes'],facePull:['Face_Pull'],cruzInv:['Reverse_Flyes','Seated_Bent-Over_Rear_Delt_Raise'],cruzInvCabo:['Cable_Rear_Delt_Fly'],
+ encHalter:['Dumbbell_Shrug'],encBarra:['Barbell_Shrug'],encMaq:['Leverage_Shrug','Smith_Machine_Behind_the_Back_Shrug'],encCabo:['Cable_Shrugs'],
+ roscaW:['EZ-Bar_Curl'],roscaBarra:['Barbell_Curl'],martelo:['Hammer_Curls'],marteloCorda:['Cable_Hammer_Curls_-_Rope_Attachment'],roscaAlt:['Dumbbell_Alternate_Bicep_Curl'],roscaMaq:['Machine_Bicep_Curl','Machine_Preacher_Curls'],scott:['Preacher_Curl','Cable_Preacher_Curl'],roscaCabo:['Standing_Biceps_Cable_Curl'],roscaConc:['Concentration_Curls'],roscaInc:['Incline_Dumbbell_Curl'],spider:['Spider_Curl'],
+ tricCorda:['Triceps_Pushdown_-_Rope_Attachment'],tricBarra:['Triceps_Pushdown'],tricV:['Triceps_Pushdown_-_V-Bar_Attachment'],tricInv:['Reverse_Grip_Triceps_Pushdown'],tricUni:['Cable_One_Arm_Tricep_Extension'],tricFrances:['Cable_Rope_Overhead_Triceps_Extension'],tricFrancesH:['Standing_Dumbbell_Triceps_Extension'],testa:['EZ-Bar_Skullcrusher'],testaCabo:['Cable_Lying_Triceps_Extension'],tricMaq:['Machine_Triceps_Extension','Dip_Machine'],coice:['Tricep_Dumbbell_Kickback'],supFechado:['Close-Grip_Barbell_Bench_Press'],banco:['Bench_Dips'],
+ legPress:['Leg_Press'],hack:['Hack_Squat','Lying_Machine_Squat'],smithSq:['Smith_Machine_Squat'],agach:['Barbell_Squat'],goblet:['Goblet_Squat'],afundo:['Dumbbell_Lunges','Split_Squat_with_Dumbbells','Smith_Single-Leg_Split_Squat','Dumbbell_Rear_Lunge'],
+ extensora:['Leg_Extensions'],flexora:['Lying_Leg_Curls','Seated_Leg_Curl'],flexoraUni:['Standing_Leg_Curl'],stiff:['Stiff-Legged_Dumbbell_Deadlift'],stiffB:['Stiff-Legged_Barbell_Deadlift','Romanian_Deadlift','Smith_Machine_Stiff-Legged_Deadlift'],
+ hipT:['Barbell_Hip_Thrust','Smith_Machine_Hip_Raise','Barbell_Glute_Bridge'],kickback:['One-Arm_Cable_Kickback'],abdutora:['Thigh_Abductor'],adutora:['Thigh_Adductor'],
+ panturrilha:['Seated_Calf_Raise','Standing_Calf_Raises','Calf_Press_On_The_Leg_Press_Machine','Smith_Machine_Calf_Raise','Standing_Dumbbell_Calf_Raise'],
+ absCabo:['Cable_Crunch'],elevPernas:['Hanging_Leg_Raise','Knee_Hip_Raise_On_Parallel_Bars','Flat_Bench_Lying_Leg_Raise'],prancha:['Plank'],pranchaLat:['Side_Bridge'],russian:['Russian_Twist'],lenhador:['Standing_Cable_Wood_Chop'],pallof:['Pallof_Press'],tuck:['Jackknife_Sit-Up']};
+const VARS={};Object.entries(VMAP).forEach(([g,ks])=>ks.forEach(k=>VARS[k]=VG[g]));
+const varsOf=e=>e?VARS[typeof e==='string'?e:exKey(e)]||null:null;
+const varOf=e=>{const l=varsOf(e);return l&&e.v?l.find(x=>x[0]===e.v)||null:null};
+const varLbl=e=>{const x=varOf(e);return x?x[1]:''};
+const nmV=e=>e.name+(varLbl(e)?' · '+varLbl(e):'');
+const vTag=e=>varLbl(e)?`<div class="vtag">✋ ${esc(varLbl(e))}</div>`:'';
+function varSheet(e,onPick,back){
+  const l=varsOf(e)||[];const cur=e.v||'';
+  openSheet(`<div class="shead"><button class="rbtn" id="vB" aria-label="Voltar">${I.back}</button><span class="t">Pegada / variação</span><span style="width:44px"></span></div>
+    <div class="dname" style="margin-top:2px">${esc(e.name)}</div>
+    <p class="muted hint" style="margin-bottom:12px">Mesmo aparelho, outro estímulo. As cargas de cada pegada ficam separadas no “Anterior”.</p>
+    <div class="qopts">${[['','Padrão','Do jeito que você já faz.'],...l].map(([k,n,d])=>`<button class="qopt vopt ${k===cur?'on':''}" data-vv="${k}"><span class="grow"><b>${esc(n)}</b><small>${esc(d)}</small></span><span class="qr"></span></button>`).join('')}</div>`);
+  document.getElementById('vB').onclick=()=>back?back():closeSheet();
+  sheet.querySelectorAll('[data-vv]').forEach(b=>b.onclick=()=>{if(navigator.vibrate)navigator.vibrate(8);onPick(b.dataset.vv)});
+}
+
 const SLOTNAME={quad:'Quadríceps',quadi:'Quadríceps (isolado)',post:'Posterior de coxa',glute:'Glúteos',adduct:'Adutores',chest:'Peito',chesti:'Peito (isolado)',backv:'Costas (puxada)',backvi:'Costas (isolado)',backh:'Costas (remada)',shpress:'Ombros (desenvolvimento)',shlat:'Ombros (lateral)',rear:'Ombro posterior',trap:'Trapézio',bi:'Bíceps',tri:'Tríceps',calf:'Panturrilha',abs:'Abdômen',obl:'Oblíquos',lower:'Lombar',func:'Funcional',cardio:'Cardio'};
 const EQNAME={maq:'Máquinas',cabo:'Cabos/polia',halter:'Halteres',barra:'Barras',corpo:'Peso corporal'};
 /* exercícios que também servem de variação para outro grupo */
@@ -644,15 +797,15 @@ function migrate(){
 }
 
 /* ================= histórico / progressão ================= */
-function perfHistory(key,excludeId){
-  return sortedSes().filter(s=>s.id!==excludeId).reverse().map(s=>{const e=s.ex.find(x=>exKey(x)===key&&doneCount(x));return e?{d:s.d,sets:e.log.filter(x=>x&&x.done)}:null}).filter(Boolean);
+function perfHistory(key,excludeId,v){
+  return sortedSes().filter(s=>s.id!==excludeId).reverse().map(s=>{const e=s.ex.find(x=>exKey(x)===key&&doneCount(x)&&(v===undefined||(x.v||'')===v));return e?{d:s.d,sets:e.log.filter(x=>x&&x.done)}:null}).filter(Boolean);
 }
-const lastPerf=(key,ex)=>perfHistory(key,ex)[0]||null;
+const lastPerf=(key,ex,v)=>perfHistory(key,ex,v)[0]||null;
 function repRange(e){const m=String(e.reps||'').match(/(\d+)\s*[–-]\s*(\d+)/);if(m)return[+m[1],+m[2]];const n=parseInt(e.reps,10);return isNaN(n)?null:[n,n]}
 function stepFor(key){const eq=(LIBX[key]||{}).eq;return eq==='halter'?2:eq==='corpo'?0:2.5}
 function suggest(e,sesId){
   if(typeof measureOf==='function'&&measureOf(e)!=='kgreps')return null;
-  const key=exKey(e),lp=lastPerf(key,sesId);const rr=repRange(e);
+  const key=exKey(e),lp=lastPerf(key,sesId,e.v||'');const rr=repRange(e);
   if(!lp)return null;
   const kgs=lp.sets.map(x=>x.kg).filter(x=>x!=null);const top=kgs.length?Math.max(...kgs):null;
   const reps=lp.sets.map(x=>x.reps).filter(x=>x!=null);
@@ -737,12 +890,12 @@ function generate(dt,nOv,prevOv){
 function variedEx(r,force){
   const used=[],orig=r.ex.map(exKey);const recent=k=>{const lu=lastUsed(k);return lu&&(Date.now()-pd(lu).getTime())/864e5<6};
   return r.ex.map(e=>{const k=exKey(e),L=LIBX[k];
-    const base={id:nid(),key:k,name:e.name,img:e.img,sets:e.sets,reps:e.reps,note:e.note||'',slot:L?L.slot:''};
+    const base={id:nid(),key:k,name:e.name,img:e.img,sets:e.sets,reps:e.reps,note:e.note||'',slot:L?L.slot:'',v:e.v||''};
     const doVary=L&&L.slot!=='cardio'&&!e.lock&&(recent(k)||(force&&Math.random()<.5));
     if(!doVary){used.push(k);return base}
     const alt=pick(L.slot,used.concat([k],orig),[]);
     if(!alt){used.push(k);return base}
-    used.push(alt.k);return Object.assign(base,{key:alt.k,name:alt.n,img:alt.k,orig:e.name,note:/^cada perna|^por lado|^cada lado/i.test(e.note||'')&&L.slot===alt.slot&&/Standing|One|Lunges|Step/.test(alt.k)?e.note:''})});
+    used.push(alt.k);return Object.assign(base,{v:'',key:alt.k,name:alt.n,img:alt.k,orig:e.name,note:/^cada perna|^por lado|^cada lado/i.test(e.note||'')&&L.slot===alt.slot&&/Standing|One|Lunges|Step/.test(alt.k)?e.note:''})});
 }
 function getPreview(force,ridOv){
   let p=ls(PVK,null);
@@ -904,6 +1057,7 @@ function render(){
   if(view.name==='session')return renderSession(S(view.id));
   if(view.name==='home'&&needsOnboard()&&!onbSkip&&(!AUTH||ls(SYK,null)!=null)){startQuiz(true);return}
   if(view.name==='quiz')return renderQuiz();
+  if(view.name==='ai')return renderAI();
   if(view.name==='modelos')return renderModels();
   if(view.name==='ajustes')return renderProfile();
   if(view.name==='academia')return renderGym();
@@ -927,7 +1081,7 @@ function startSession(src,d){
   const cur=openSes();
   if(cur){if(!confirm(`Você tem "${cur.title}" em andamento. Finalizar ele e começar este?`))return;closeSession(cur,true)}
   const s={id:nid(),d:d||today(),kind:src.kind,rid:src.rid||null,dayType:src.dayType||null,title:src.title,
-    ex:src.ex.map(e=>({id:nid(),key:exKey(e),name:e.name,img:e.img,sets:e.sets,reps:e.reps,note:e.note||'',slot:e.slot||(LIBX[exKey(e)]||{}).slot||'',log:[]})),start:Date.now(),end:null,closed:false};
+    ex:src.ex.map(e=>({id:nid(),key:exKey(e),name:e.name,img:e.img,sets:e.sets,reps:e.reps,note:e.note||'',v:e.v||'',slot:e.slot||(LIBX[exKey(e)]||{}).slot||'',log:[]})),start:Date.now(),end:null,closed:false};
   SES.push(s);saveSes();localStorage.removeItem(PVK);
   go({name:'session',id:s.id});
 }
@@ -1024,9 +1178,9 @@ function renderRoutine(r){
   if(!r)return go({name:'home'});
   const rows=r.ex.map((e,i)=>{
     if(editing&&!gen)return `<div class="ex editing" data-ex="${e.id}"><button class="minus" data-del="${i}" aria-label="Remover ${esc(e.name)}">−</button>${thumbHTML(e.img,'thumb','width:60px;height:60px')}
-      <div class="grow" data-open-ed="${e.id}"><div class="nm">${esc(e.name)}</div><div class="det">${esc(detail(e))}</div></div><span class="handle" aria-label="Arrastar para reordenar">${IC.grip}</span></div>`;
+      <div class="grow" data-open-ed="${e.id}"><div class="nm">${esc(e.name)}</div><div class="det">${esc(detail(e))}</div>${vTag(e)}</div><span class="handle" aria-label="Arrastar para reordenar">${IC.grip}</span></div>`;
     return `<div class="ex stag" style="--i:${i}" data-ex="${e.id}" role="button" tabindex="0"><span class="num">${i+1}</span>${thumbHTML(e.img)}
-      <div class="grow"><div class="nm">${esc(e.name)}</div><div class="det">${esc(detail(e))}</div>${e.note?`<div class="note">${esc(e.note)}</div>`:''}${gen&&e.orig?`<div class="note">🔀 no lugar de: ${esc(e.orig)}</div>`:gen&&e.slot&&SLOTNAME[e.slot]?`<div class="note">${SLOTNAME[e.slot]}</div>`:''}</div>
+      <div class="grow"><div class="nm">${esc(e.name)}</div><div class="det">${esc(detail(e))}</div>${vTag(e)}${e.note?`<div class="note">${esc(e.note)}</div>`:''}${gen&&e.orig?`<div class="note">🔀 no lugar de: ${esc(e.orig)}</div>`:gen&&e.slot&&SLOTNAME[e.slot]?`<div class="note">${SLOTNAME[e.slot]}</div>`:''}</div>
       ${gen&&e.slot!=='cardio'?`<button class="cb" data-swap="${i}" aria-label="Trocar exercício">🔀</button>`:`<span class="chev">${I.chev}</span>`}</div>`}).join('');
   app.innerHTML=`<div class="top sticky"><button class="rbtn glass" id="back" aria-label="Voltar">${I.back}</button>
     <div style="display:flex;gap:8px">${gen?`${pv.kind!=='ficha'||PROFILE.vary?`<button class="pill glass" id="reroll">🔀 ${pv.kind==='ficha'?'Variar':'Gerar outro'}</button>`:''}${pv.kind==='ficha'?`<button class="pill glass" id="openF">Ficha</button>`:''}`:editing?`<button class="pill lime" id="edit">Concluir</button>`:`<button class="pill glass" id="edit">Editar</button><button class="rbtn glass" id="rmenu" aria-label="Mais opções">${I.more}</button>`}</div></div>
@@ -1060,6 +1214,7 @@ function previewEx(e){
   openSheet(`<div class="shead"><button class="rbtn" id="pX" aria-label="Fechar">${I.x}</button><span class="t">Exercício</span><span style="width:44px"></span></div>
     ${s.length?`<div class="bigimg ${s.length>1?'anim':''}"><img src="${s[0]}" alt="">${s[1]?`<img class="f2" src="${s[1]}" alt="">`:''}</div>`:''}
     <div class="dname">${esc(e.name)}</div><div class="chips"><span class="chip"><b>${esc(detail(e))}</b></span>${e.note?`<span class="chip">${esc(e.note)}</span>`:''}</div>
+    ${varOf(e)?`<div class="tip">✋ <b>${esc(varOf(e)[1])}</b><small>${esc(varOf(e)[2])}</small></div>`:''}
     ${sg?`<div class="tip">💡 ${esc(sg.msg)}<small>Última vez: ${esc(sg.prev)}</small></div>`:''}`);
   document.getElementById('pX').onclick=closeSheet;
 }
@@ -1080,7 +1235,7 @@ function renderSession(s){
   const rows=s.ex.map((e,i)=>{const d=doneCount(e),full=isExDone(e);
     return `<div class="ex stag ${full?'done':''}" style="--i:${i}" data-ex="${e.id}" role="button" tabindex="0"><span class="num">${i+1}</span>${thumbHTML(e.img)}
       <div class="grow"><div class="nm">${esc(e.name)}</div><div class="det">${esc(detail(e))}${d&&!full?` <span style="color:var(--muted);font-size:15px">· ${d}/${setsN(e)}</span>`:''}</div>
-      ${full&&e.log.some(x=>x.kg!=null||x.reps!=null||x.sec!=null||x.min!=null)?`<div class="note">${fmtLog(e)}</div>`:e.note?`<div class="note">${esc(e.note)}</div>`:''}</div>${full?'':`<span class="chev">${I.chev}</span>`}</div>`}).join('');
+      ${vTag(e)}${full&&e.log.some(x=>x.kg!=null||x.reps!=null||x.sec!=null||x.min!=null)?`<div class="note">${fmtLog(e)}</div>`:e.note?`<div class="note">${esc(e.note)}</div>`:''}</div>${full?'':`<span class="chev">${I.chev}</span>`}</div>`}).join('');
   const dn=sesDone(s);
   app.innerHTML=`<div class="top sticky"><button class="rbtn glass" id="back" aria-label="Voltar">${I.back}</button>
     <div style="display:flex;gap:8px"><label class="pill glass datepill">📅 ${dLabel(s.d)}<input type="date" id="sDate" value="${s.d}" max="${today()}"></label><button class="rbtn glass" id="smenu" aria-label="Opções do treino">${I.more}</button></div></div>
@@ -1116,7 +1271,7 @@ function sessionMenu(s){
   q('smDate').onclick=()=>{closeSheet();setTimeout(()=>{const i=document.getElementById('sDate');if(i.showPicker)try{i.showPicker()}catch(e){i.click()}else i.click()},300)};
   q('smAll').onclick=()=>{s.ex.forEach(e=>{const n=setsN(e);while(e.log.length<n)e.log.push({kg:null,reps:null,done:true});e.log.forEach(x=>x.done=true)});saveSes();closeSheet();render()};
   if(q('smSave'))q('smSave').onclick=()=>{const used=new Set(plan.routines.map(r=>r.letter));const L='ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').find(c=>!used.has(c))||'★';
-    plan.routines.push({id:nid(),letter:L,name:s.title,ex:s.ex.map(e=>({id:nid(),key:e.key,name:e.name,img:e.img,sets:e.sets,reps:e.reps,note:e.note}))});savePlan();closeSheet();toast('Salvo nas fichas')};
+    plan.routines.push({id:nid(),letter:L,name:s.title,ex:s.ex.map(e=>({id:nid(),key:e.key,name:e.name,img:e.img,sets:e.sets,reps:e.reps,note:e.note,v:e.v||''}))});savePlan();closeSheet();toast('Salvo nas fichas')};
   q('smDel').onclick=()=>{if(confirm(s.closed?'Excluir este treino do histórico?':'Descartar o treino em andamento?')){delSes(s);saveSes();closeSheet();go({name:'home'})}};
 }
 function addExToSession(s){
@@ -1149,9 +1304,9 @@ const fmtLog=e=>e.log.filter(x=>x&&x.done).map(x=>fmtSet(x,measureOf(e))).join('
 function openSet(s,e){
   const sid=s.id,eid=e.id;
   const cur=()=>{const s2=S(sid);if(s2){s=s2;const e2=s2.ex.find(x=>x.id===eid);if(e2)e=e2}return e};
-  let idx=s.ex.indexOf(e),lp=lastPerf(exKey(e),s.id);
+  let idx=s.ex.indexOf(e),lp=lastPerf(exKey(e),s.id,e.v||'');
   const draw=()=>{
-    cur();idx=s.ex.indexOf(e);lp=lastPerf(exKey(e),s.id);
+    cur();idx=s.ex.indexOf(e);lp=lastPerf(exKey(e),s.id,e.v||'');
     const m=measureOf(e);const isC=m==='cardio';
     const n=Math.max(isC?1:setsN(e),e.log.length);while(e.log.length<n)e.log.push({kg:null,reps:null,done:false});
     const sg=m==='kgreps'?suggest(e,s.id):null;
@@ -1171,6 +1326,7 @@ function openSet(s,e){
       ${src.length?`<div class="bigimg ${src.length>1?'anim':''}"><img src="${src[0]}" alt="${esc(e.name)}">${src[1]?`<img class="f2" src="${src[1]}" alt="">`:''}</div>`:''}
       <div class="dname">${esc(e.name)}</div>
       <div class="chips">${chip}${e.note?`<span class="chip">${esc(e.note)}</span>`:''}</div>
+      ${varsOf(e)?`<button class="vbtn" id="sVar"><span class="vi">✋</span><span class="grow"><small>Pegada / variação</small><b>${esc(varLbl(e)||'Padrão')}</b></span><span class="vt">Trocar</span></button>`:''}
       ${sg?`<div class="tip ${sg.up?'up':''}">${sg.up?'📈':'💡'} ${esc(sg.msg)}</div>`:''}
       <div class="mseg">${Object.entries(MEASURES).map(([k,v])=>`<button class="${k===m?'on':''}" data-m="${k}">${v}</button>`).join('')}</div>
       <div class="sethead m-${m}"><span>${isC?'':'Série'}</span><span>Anterior</span>${head.map(h=>`<span>${h}</span>`).join('')}<span></span></div>
@@ -1180,6 +1336,9 @@ function openSet(s,e){
     const q=id=>document.getElementById(id);
     q('sClose').onclick=closeSheet;
     if(q('sSwap'))q('sSwap').onclick=()=>swapSheet(e,k=>{cur();idx=s.ex.indexOf(e);const ne=swapIn(s.ex,idx,k);saveSes();render();openSet(s,ne)});
+    if(q('sVar'))q('sVar').onclick=()=>varSheet(e,v=>{cur();e.v=v;
+      if(s.kind==='ficha'&&R(s.rid)){const pe=R(s.rid).ex.find(x=>exKey(x)===exKey(e));if(pe&&(pe.v||'')!==v){pe.v=v;savePlan()}}
+      saveSes();render();draw();toast(v?varLbl(e):'Pegada padrão')},draw);
     sheet.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{cur();const v=b.dataset.m;e.measure=v;const mm=ls(MEASK,{});mm[exKey(e)]=v;ss(MEASK,mm);
       if(v==='cardio'){e.log=e.log.slice(0,1)}saveSes();render();draw()});
     sheet.querySelectorAll('.setrow').forEach(row=>{const i=+row.dataset.i;const X=()=>cur().log[i]||{};
@@ -1202,20 +1361,18 @@ function openSet(s,e){
 
 /* ---------- resumo ---------- */
 function showSummary(s){
-  const sets=s.ex.reduce((a,e)=>a+doneCount(e),0);
-  const vol=s.ex.reduce((a,e)=>a+e.log.filter(x=>x.done&&x.kg).reduce((t,x)=>t+x.kg*(x.reps||10),0),0);
-  const mins=s.end&&s.start?Math.max(1,Math.round((s.end-s.start)/60000)):estMin(s.ex);
-  const prs=s.ex.map(e=>{const k=e.log.filter(x=>x.done&&x.kg!=null).map(x=>x.kg);if(!k.length)return null;const now=Math.max(...k);
-    const prev=perfHistory(exKey(e),s.id).filter(p=>p.d<=s.d).flatMap(p=>p.sets.map(x=>x.kg).filter(v=>v!=null));const best=prev.length?Math.max(...prev):null;
-    return best!=null&&now>best?{n:e.name,kg:now,diff:now-best}:null}).filter(Boolean);
+  const st=sumStats(s);const {sets,mins,prs}=st;
   openSheet(`<div class="shead"><span style="width:44px"></span><span class="t">Resumo</span><button class="rbtn" id="suX" aria-label="Fechar">${I.x}</button></div>
     <div class="sumhead"><div class="trophy">🏆</div><h2>Treino concluído!</h2><div class="muted">${esc(s.title)} · ${dLabel(s.d)}</div></div>
     <div class="sgrid"><div class="stat"><b>${mins}</b><span>minutos</span></div><div class="stat"><b>${sets}</b><span>séries</span></div>
-    <div class="stat"><b>${sesDone(s)}/${s.ex.length}</b><span>exercícios</span></div><div class="stat"><b>${vol>=1000?fmtKg(vol/1000)+'t':fmtKg(vol)+'kg'}</b><span>volume total</span></div></div>
+    <div class="stat"><b>${sesDone(s)}/${s.ex.length}</b><span>exercícios</span></div><div class="stat"><b>${st.volTxt}</b><span>volume total</span></div></div>
     ${prs.length?`<div class="lbl">Recordes batidos 🎉</div><div class="box">${prs.map(p=>`<div class="pr">📈 ${esc(p.n)}<i>${fmtKg(p.kg)} kg (+${fmtKg(p.diff)})</i></div>`).join('')}</div>`:''}
     <div class="quote" style="margin-top:14px"><p>${esc(fraseHoje())}</p><span>Frase do dia</span></div>
-    <button class="bigcta" id="suOk">Fechar</button>`);
+    <button class="bigcta story" id="suSt">📸 Compartilhar nos Stories</button>
+    <button class="bigcta dark" id="suOk">Fechar</button>`);
   document.getElementById('suX').onclick=document.getElementById('suOk').onclick=()=>{closeSheet();go({name:'home'})};
+  document.getElementById('suSt').onclick=()=>shareStory(s);
+  prepStory(s);
   if(navigator.vibrate)navigator.vibrate([40,60,40]);
 }
 
@@ -1309,17 +1466,19 @@ function dayChooser(k){
   sheet.querySelectorAll('[data-s2]').forEach(b=>b.onclick=()=>histSheet(S(b.dataset.s2)));
 }
 function histSheet(s){
-  const rows=s.ex.map(e=>`<div class="lrow"><b style="font-weight:600">${esc(e.name)}</b><span>${doneCount(e)?fmtLog(e):'não feito'}</span></div>`).join('');
+  const rows=s.ex.map(e=>`<div class="lrow"><b style="font-weight:600">${esc(nmV(e))}</b><span>${doneCount(e)?fmtLog(e):'não feito'}</span></div>`).join('');
   openSheet(`<div class="shead"><button class="rbtn" id="hX" aria-label="Fechar">${I.x}</button><span class="t">${dLabel(s.d)}</span><span style="width:44px"></span></div>
     <div class="dname" style="margin-top:4px">${esc(s.title)}</div>
     <label class="fld"><span>Data do treino</span><input type="date" id="hD" value="${s.d}" max="${today()}"></label>
     <div class="box">${rows}</div>
     <button class="bigcta" id="hEdit">Editar séries e cargas</button>
+    ${s.ex.some(e=>doneCount(e))?`<button class="bigcta story" id="hSt">📸 Compartilhar nos Stories</button>`:''}
     <button class="bigcta dark" id="hAdd">+ Registrar outro treino neste dia</button>
     <button class="bigcta red" id="hDel">Excluir este treino</button>`);
   const q=id=>document.getElementById(id);q('hX').onclick=closeSheet;
   q('hD').onchange=ev=>{const v=ev.target.value;if(v&&v<=today()){s.d=v;saveSes();animOn=false;render();animOn=true;toast('Data alterada')}};
   q('hEdit').onclick=()=>{closeSheet();go({name:'session',id:s.id})};
+  if(q('hSt')){prepStory(s);q('hSt').onclick=()=>shareStory(s)}
   q('hAdd').onclick=()=>logPastSheet(s.d);
   q('hDel').onclick=()=>{if(confirm('Excluir este treino do histórico? Isso também ajusta qual é o próximo treino.')){delSes(s);saveSes();closeSheet();render();toast('Treino excluído')}};
 }
@@ -1502,7 +1661,7 @@ function openMenu(){
     ${AUTH?mItem('mSync',IC.sync,'Sincronizar',syncText()):mItem('mLogin',IC.user,'Entrar com e-mail','Salvar na nuvem')}
     ${mItem('mQuiz',IC.target,'Refazer meu perfil','Objetivo, nível e rotina')}
     ${AUTH?mItem('mOut',IC.out,'Sair deste aparelho','','red'):''}
-    <div class="mfoot">Meu Treino · v10.0</div>`;
+    <div class="mfoot">Meu Treino · v11.0</div>`;
   const b=document.getElementById('menuBtn');if(b){const r=b.getBoundingClientRect();menuEl.style.top=Math.max(8,r.bottom+8)+'px';menuEl.style.right=Math.max(12,innerWidth-r.right)+'px';b.setAttribute('aria-expanded','true')}
   menuEl.classList.add('open');mscrim.classList.add('open');
   const q=id=>document.getElementById(id);const act=(id,f)=>{if(q(id))q(id).onclick=()=>{closeMenu();setTimeout(f,120)}};
@@ -1576,7 +1735,8 @@ function exInfo(k,back){
     <div class="dname">${esc(x.n)}</div>
     <div class="chips"><span class="chip">${EQNAME[x.eq]||'Cardio'}</span><span class="chip">${lu?`Feito <b>${dLabel(lu).toLowerCase()}</b>`:'Nunca feito'}</span>${best!=null?`<span class="chip">Recorde <b>${fmtKg(best)} kg</b></span>`:''}</div>
     <div class="mlist" style="margin-top:16px"><button class="gi ${on?'on':''}" id="xiG" role="switch" aria-checked="${on}"><span class="grow"><b>Tem na minha academia</b><small>${on?'Entra nas variações e no gerador':'Fica de fora das variações e do gerador'}</small></span><span class="sw"></span></button></div>
-    ${alts.length?`<div class="lbl">Variações do mesmo grupo</div><div class="tchips">${alts.map(y=>`<button data-alt="${y.k}">${esc(y.n)}</button>`).join('')}</div>`:''}`);
+    ${VARS[k]?`<div class="lbl">Pegadas neste aparelho</div><div class="box vlist">${VARS[k].map(v=>`<div class="lrow"><b style="font-weight:600">${esc(v[1])}<small>${esc(v[2])}</small></b></div>`).join('')}</div>`:''}
+    ${alts.length?`<div class="lbl">Outros exercícios do mesmo grupo</div><div class="tchips">${alts.map(y=>`<button data-alt="${y.k}">${esc(y.n)}</button>`).join('')}</div>`:''}`);
     document.getElementById('xiB').onclick=()=>back?back():closeSheet();
     document.getElementById('xiG').onclick=()=>{const i=PROFILE.noGym.indexOf(k);if(i>=0)PROFILE.noGym.splice(i,1);else PROFILE.noGym.push(k);saveProfile();localStorage.removeItem(PVK);const st=sheet.scrollTop;draw();sheet.scrollTop=st;if(view.name==='academia'){animOn=false;render();animOn=true}};
     sheet.querySelectorAll('[data-alt]').forEach(b=>b.onclick=()=>exInfo(b.dataset.alt,back));
@@ -1734,10 +1894,13 @@ function singleSheet(id){
 function genSheet(){
   openSheet(`<div class="shead"><button class="rbtn" id="gfX" aria-label="Fechar">${I.x}</button><span class="t">Gerar fichas</span><span style="width:44px"></span></div>
     <p class="muted hint">Monta fichas novas a partir do seu perfil: <b style="color:var(--text)">${OBJ[PROFILE.obj]}</b> · <b style="color:var(--text)">${SPLIT[PROFILE.split]}</b> · até ${PROFILE.min} min.</p>
-    <button class="bigcta" id="gfAdd">Adicionar às minhas fichas</button>
+    <button class="aicard" id="gfAI" style="margin-top:12px"><span class="aisp">✨</span><span class="grow"><b>Montar com IA</b><small>A IA monta fichas sob medida, com pegadas e variações.</small></span></button>
+    <div class="lbl">Ou pelo gerador automático</div>
+    <button class="bigcta" id="gfAdd" style="margin-top:4px">Adicionar às minhas fichas</button>
     <button class="bigcta red" id="gfRep">Substituir minhas fichas atuais</button>
     <p class="foot">Seu histórico de treinos e cargas não é apagado.</p>`);
   document.getElementById('gfX').onclick=closeSheet;
+  document.getElementById('gfAI').onclick=()=>{closeSheet();if(!AUTH){toast('Entre na sua conta para usar a IA');return}aiRun()};
   document.getElementById('gfAdd').onclick=()=>{createFichas(false);closeSheet();tab='fichas';go({name:'home'});toast('Fichas adicionadas')};
   document.getElementById('gfRep').onclick=()=>{if(confirm('Substituir todas as suas fichas pelas geradas?')){createFichas(true);closeSheet();tab='fichas';go({name:'home'});toast('Fichas substituídas')}};
 }
@@ -1756,6 +1919,7 @@ const QSTEPS=[
  {id:'focus',multi:1,q:'Quais regiões você quer priorizar?',sub:'Escolha quantas quiser.',opts:[['core','Abdômen e cintura','🎯'],['glute','Glúteos e pernas','🍑'],['upper','Peitoral e ombros','🛡️'],['arms','Braços','💪'],['trap','Costas e trapézio','🔺']],none:'Corpo inteiro por igual'},
  {id:'limits',multi:1,q:'Alguma região sensível?',sub:'Os exercícios que costumam incomodar ficam de fora.',opts:[['lombar','Lombar / costas','🩹'],['joelho','Joelhos','🦵'],['ombro','Ombros','🤕']],none:'Nenhuma'},
  {id:'cardio',q:'E o cardio no fim do treino?',sub:'Dá para ajustar depois em Ajustes.',opts:[['0','Sem cardio, já pratico outro esporte','⚽️'],['15','Pouco: 10 a 15 min','🚶'],['25','Moderado: 20 a 30 min','🏃'],['35','Bastante: 30 min ou mais','🚴']]},
+ {id:'notes',type:'notes',q:'Quer contar mais alguma coisa?',sub:'Opcional. A IA usa isso para montar sua ficha. Ex.: jogo futebol 2x por semana, dor no joelho direito, não curto agachamento livre, quero braço maior.'},
  {id:'body',type:'body',q:'Suas medidas',sub:'Opcional. Usamos para o IMC e para acompanhar sua evolução.'}
 ];
 const PLACEEQ={full:['maq','cabo','halter','barra','corpo'],small:['maq','cabo','halter','corpo'],homeDb:['halter','corpo'],home:['corpo']};
@@ -1763,14 +1927,17 @@ let QZ={},qStep=0,onbSkip=false;
 function needsOnboard(){return !!PROFILE&&!PROFILE.onboarded&&!plan.routines.length&&!SES.length}
 function startQuiz(first){
   const P=PROFILE,o=P.quiz||{};
-  QZ=P.onboarded?Object.assign({},o,{name:P.name||'',obj:P.obj,freq:String(P.freq),min:String(P.min),cardio:String(P.cardio),focus:[...P.focus],limits:[...(P.limits||[])],h:P.height||'',w:'',gw:P.goalW||''}):{name:P.name||'',focus:[],limits:[]};
+  QZ=P.onboarded?Object.assign({},o,{name:P.name||'',obj:P.obj,freq:String(P.freq),min:String(P.min),cardio:String(P.cardio),focus:[...P.focus],limits:[...(P.limits||[])],h:P.height||'',w:'',gw:P.goalW||'',notes:P.aiNotes||''}):{name:P.name||'',focus:[],limits:[]};
   qStep=0;go({name:'quiz',first:!!first});
 }
+function aiQuizBits(){const out=[];const lab=(id,v)=>{const st=QSTEPS.find(x=>x.id===id);const o=st&&st.opts&&st.opts.find(x=>x[0]===String(v));return o?o[1]:null};
+  if(QZ.obj)out.push(lab('obj',QZ.obj));if(QZ.place)out.push(lab('place',QZ.place));if(QZ.freq)out.push(QZ.freq+'x/semana');if(QZ.min)out.push(QZ.min+' min');
+  (QZ.focus||[]).forEach(f=>out.push(lab('focus',f)));(QZ.limits||[]).forEach(l=>out.push('cuidado: '+lab('limits',l).toLowerCase()));return out.filter(Boolean)}
 function levelFrom(q){const sc=(+q.train||0)+(+q.push||0)+(+q.squat||0);let l=sc<=3?'ini':sc<=6?'inter':'avan';if(q.age==='50'&&l==='avan')l='inter';return l}
 function finishQuiz(){
   const P=PROFILE,q=QZ;
   if(q.name)P.name=q.name.trim();if(q.obj)P.obj=q.obj;if(q.min)P.min=+q.min;if(q.cardio!=null&&q.cardio!=='')P.cardio=+q.cardio;
-  P.focus=[...(q.focus||[])];P.limits=[...(q.limits||[])];if(q.place)P.equip=[...PLACEEQ[q.place]];
+  P.focus=[...(q.focus||[])];P.limits=[...(q.limits||[])];if(q.notes!=null)P.aiNotes=String(q.notes).trim().slice(0,500);if(q.place)P.equip=[...PLACEEQ[q.place]];
   if(q.train!=null&&q.push!=null&&q.squat!=null)P.level=levelFrom(q);
   const h=num(q.h),w=num(q.w),gw=num(q.gw);if(h)P.height=h;if(gw)P.goalW=gw;
   if(w){const t=today();let row=MED.find(x=>x.d===t);if(!row){row={d:t};MED.push(row);MED.sort((a,b)=>a.d<b.d?-1:1)}row.peso=w;saveMed()}
@@ -1784,6 +1951,7 @@ function renderQuiz(){
   const bar=`<div class="qbar">${QSTEPS.map((_,i)=>`<i class="${i<=qStep?'on':''}"></i>`).join('')}</div>`;
   let body='';
   if(st.type==='text')body=`<label class="fld"><span>Nome</span><input id="qzT" value="${esc(v||'')}" placeholder="Seu nome" autocapitalize="words" maxlength="30"></label>`;
+  else if(st.type==='notes')body=`<label class="fld"><span>Observações para a IA</span><textarea id="qzN" rows="4" maxlength="500" placeholder="Escreva do seu jeito">${esc(QZ.notes||'')}</textarea></label>`;
   else if(st.type==='body')body=`<div class="row2"><label class="fld"><span>Altura (cm)</span><input id="qzH" inputmode="decimal" value="${esc(QZ.h||'')}" placeholder="175"></label><label class="fld"><span>Peso atual (kg)</span><input id="qzW" inputmode="decimal" value="${esc(QZ.w||'')}" placeholder="80"></label></div>
     <label class="fld"><span>Peso que você quer alcançar (kg)</span><input id="qzG" inputmode="decimal" value="${esc(QZ.gw||'')}" placeholder="Opcional"></label>`;
   else{const sel=k=>st.multi?(v||[]).includes(k):String(v)===k;
@@ -1791,17 +1959,21 @@ function renderQuiz(){
       ${st.none?`<button class="qopt ${st.multi&&v&&!v.length&&QZ[st.id+'_n']?'on':''}" data-qnone="1"><span class="grow">${esc(st.none)}</span><span class="qr"></span></button>`:''}</div>
       ${st.img?`<div class="bigimg anim qimg">${imgSrcs(st.img).map((s,i)=>`<img ${i?'class="f2"':''} src="${s}" alt="">`).join('')}</div>`:''}`}
   const needBtn=st.multi||st.type;
+  const noteBits=aiQuizBits();
   app.innerHTML=`<div class="qtop">${(qStep>0||!view.first)?`<button class="rbtn glass" id="qzB" aria-label="Voltar">${I.back}</button>`:'<span style="width:44px"></span>'}${bar}<button class="qskip" id="qzS">${view.first?'Pular':'Fechar'}</button></div>
-    <div class="qwrap"><div class="qn">${qStep+1} de ${N}</div><h1 class="qq">${esc(st.q)}</h1>${st.sub?`<p class="qsub">${esc(st.sub)}</p>`:''}${body}</div>`;
-  cta.hidden=!needBtn;if(needBtn){ctaBtn.textContent=st.type==='body'?(QZ.w||QZ.h?'Ver meu perfil':'Pular e ver meu perfil'):'Próximo passo';ctaBtn.onclick=next}
+    <div class="qwrap"><div class="qn">${qStep+1} de ${N}</div><h1 class="qq">${esc(st.q)}</h1>${st.sub?`<p class="qsub">${esc(st.sub)}</p>`:''}${body}
+    ${noteBits.length>1?`<div class="ainote"><span>✨</span><span>A IA já anotou: <b>${noteBits.map(esc).join(' · ')}</b></span></div>`:''}</div>`;
+  cta.hidden=!needBtn;if(needBtn){ctaBtn.textContent=st.type==='notes'?((QZ.notes||'').trim()?'Próximo passo':'Pular'):st.type==='body'?(QZ.w||QZ.h?'Ver meu perfil':'Pular e ver meu perfil'):'Próximo passo';ctaBtn.onclick=next}
   const q=id=>document.getElementById(id);
   function next(){
     if(st.type==='text'){const t=q('qzT').value.trim();if(!t){q('qzT').focus();toast('Digite seu nome');return}QZ.name=t}
+    if(st.type==='notes')QZ.notes=q('qzN').value;
     if(st.type==='body'){QZ.h=q('qzH').value;QZ.w=q('qzW').value;QZ.gw=q('qzG').value;return finishQuiz()}
     qStep++;animOn=true;lastKey='';render();scrollTo(0,0)}
   if(q('qzB'))q('qzB').onclick=()=>{if(qStep>0){qStep--;lastKey='';render()}else go({name:'home'})};
   q('qzS').onclick=()=>{if(view.first){onbSkip=true;PROFILE.onboarded=true;if(QZ.name)PROFILE.name=QZ.name;saveProfile();go({name:'modelos'})}else go({name:'home'})};
   if(q('qzT')){q('qzT').onkeydown=e=>{if(e.key==='Enter')next()};if(!v)setTimeout(()=>{const t=q('qzT');if(t)t.focus()},350)}
+  if(st.type==='notes')q('qzN').oninput=()=>{QZ.notes=q('qzN').value;ctaBtn.textContent=QZ.notes.trim()?'Próximo passo':'Pular'};
   if(st.type==='body'){['qzH','qzW'].forEach(id=>q(id).oninput=()=>{QZ.h=q('qzH').value;QZ.w=q('qzW').value;ctaBtn.textContent=QZ.w||QZ.h?'Ver meu perfil':'Pular e ver meu perfil'})}
   app.querySelectorAll('[data-qv]').forEach(b=>b.onclick=()=>{const k=b.dataset.qv;
     if(st.multi){const a=QZ[st.id]=QZ[st.id]||[];const i=a.indexOf(k);if(i>=0)a.splice(i,1);else a.push(k);QZ[st.id+'_n']=false;
@@ -1823,6 +1995,7 @@ function renderQuizResult(){
   const PL={full:'Academia completa',small:'Academia pequena',homeDb:'Casa com halteres',home:'Casa sem equipamento'};
   app.innerHTML=`<div class="qtop"><span style="width:44px"></span><div class="qbar">${QSTEPS.map(()=>'<i class="on"></i>').join('')}</div><button class="qskip" id="qzS">Fechar</button></div>
     <div class="qwrap"><h1 class="qq">${P.name?esc(P.name.split(' ')[0])+', aqui':'Aqui'} está o seu perfil</h1>
+    <button class="aicard" id="qzAI"><span class="aisp">✨</span><span class="grow"><b>Montar minha ficha com IA</b><small>${AUTH?'Fichas sob medida para as suas respostas, com pegadas e variações.':'Entre na sua conta para usar a IA.'}</small></span><span class="chev">${I.chev}</span></button>
     <div class="box" style="margin-top:16px">
       <div class="lrow"><b style="font-weight:600">Nível</b><span>${LEVEL[P.level]}</span></div>
       <div class="lrow"><b style="font-weight:600">Objetivo</b><span>${OBJ[P.obj]}</span></div>
@@ -1834,10 +2007,173 @@ function renderQuizResult(){
     <div class="lbl">Plano recomendado</div><div class="list">${progCard(best,true)}</div>
     <div class="lbl">Outras boas opções</div><div class="list">${recs.slice(1,3).map(m=>progCard(m)).join('')}</div>
     <button class="linkbtn" id="qzAll">Ver todos os modelos</button></div>`;
-  cta.hidden=false;ctaBtn.textContent='Usar o plano recomendado';ctaBtn.onclick=()=>progSheet(best);
+  cta.hidden=false;if(AUTH){ctaBtn.textContent='Montar com IA ✨';ctaBtn.onclick=()=>aiRun()}else{ctaBtn.textContent='Usar o plano recomendado';ctaBtn.onclick=()=>progSheet(best)}
+  document.getElementById('qzAI').onclick=()=>AUTH?aiRun():toast('Entre na sua conta (Perfil) para usar a IA');
   const q=id=>document.getElementById(id);
   q('qzS').onclick=()=>go({name:'home'});q('qzAll').onclick=()=>go({name:'modelos'});
   app.querySelectorAll('[data-prog]').forEach(b=>b.onclick=()=>progSheet(PROGS.find(m=>m.id===b.dataset.prog)));
+}
+
+/* ================= STORIES (v11) ================= */
+function sumStats(s){
+  const sets=s.ex.reduce((a,e)=>a+doneCount(e),0);
+  const vol=s.ex.reduce((a,e)=>a+e.log.filter(x=>x.done&&x.kg).reduce((t,x)=>t+x.kg*(x.reps||10),0),0);
+  const mins=s.end&&s.start?Math.max(1,Math.round((s.end-s.start)/60000)):estMin(s.ex);
+  const prs=s.ex.map(e=>{const k=e.log.filter(x=>x.done&&x.kg!=null).map(x=>x.kg);if(!k.length)return null;const now=Math.max(...k);
+    const prev=perfHistory(exKey(e),s.id,e.v||'').filter(p=>p.d<=s.d).flatMap(p=>p.sets.map(x=>x.kg).filter(v=>v!=null));const best=prev.length?Math.max(...prev):null;
+    return best!=null&&now>best?{n:nmV(e),kg:now,diff:now-best}:null}).filter(Boolean);
+  return{sets,vol,mins,prs,volTxt:vol>=1000?fmtKg(vol/1000)+'t':fmtKg(vol)+'kg'};
+}
+function rrect(x,X,Y,W,H,r){x.beginPath();x.moveTo(X+r,Y);x.arcTo(X+W,Y,X+W,Y+H,r);x.arcTo(X+W,Y+H,X,Y+H,r);x.arcTo(X,Y+H,X,Y,r);x.arcTo(X,Y,X+W,Y,r);x.closePath()}
+function fitText(x,t,maxW,font,size){let s=size;do{x.font=font.replace('#',s);s-=2}while(x.measureText(t).width>maxW&&s>20);return t}
+async function storyBlob(s){
+  const st=sumStats(s);const W=1080,H=1920;const c=document.createElement('canvas');c.width=W;c.height=H;const x=c.getContext('2d');
+  try{await Promise.all([document.fonts.load('800 100px BC'),document.fonts.load('700 50px BC')])}catch(e){}
+  const SYS='-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+  let g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,'#10252B');g.addColorStop(.55,'#08161A');g.addColorStop(1,'#040A0C');x.fillStyle=g;x.fillRect(0,0,W,H);
+  const rg=x.createRadialGradient(W/2,420,0,W/2,420,640);rg.addColorStop(0,'rgba(184,255,44,.26)');rg.addColorStop(1,'rgba(184,255,44,0)');x.fillStyle=rg;x.fillRect(0,0,W,H);
+  x.textAlign='center';x.textBaseline='alphabetic';
+  // marca
+  x.fillStyle='#B8FF2C';x.font='800 46px BC, sans-serif';x.fillText('M E U   T R E I N O',W/2,232);
+  // troféu
+  x.font=`230px ${SYS}`;x.fillText('🏆',W/2,510);
+  // título
+  x.fillStyle='#F1F5F5';x.font='800 160px BC, Impact, sans-serif';x.fillText('TREINO',W/2,700);x.fillText('CONCLUÍDO!',W/2,840);
+  const dt=new Date(s.d+'T12:00:00').toLocaleDateString('pt-BR',{day:'numeric',month:'long'});
+  const sub=`${s.title} · ${dt}`;x.fillStyle='#9FB0B4';fitText(x,sub,900,`500 #px ${SYS}`,46);x.fillText(sub,W/2,915);
+  // estatísticas 2×2
+  const cells=[[st.mins,'minutos'],[st.sets,'séries'],[`${sesDone(s)}/${s.ex.length}`,'exercícios'],[st.volTxt,'volume total']];
+  const cw=450,ch=210,gx=40,ox=(W-cw*2-gx)/2,oy=975;
+  cells.forEach(([v,l],i)=>{const X=ox+(i%2)*(cw+gx),Y=oy+Math.floor(i/2)*(ch+gx);
+    rrect(x,X,Y,cw,ch,44);x.fillStyle='rgba(255,255,255,.055)';x.fill();x.strokeStyle='rgba(255,255,255,.09)';x.lineWidth=2;x.stroke();
+    x.textAlign='left';x.fillStyle='#B8FF2C';x.font='800 110px BC, Impact, sans-serif';x.fillText(String(v),X+40,Y+122);
+    x.fillStyle='#9FB0B4';x.font=`500 36px ${SYS}`;x.fillText(l,X+42,Y+176);x.textAlign='center'});
+  // recordes ou exercícios
+  let y=1505;
+  const lines=st.prs.length?st.prs.slice(0,3).map(p=>[`📈 ${p.n}`,`${fmtKg(p.kg)} kg`]):s.ex.filter(e=>doneCount(e)).slice(0,3).map(e=>[`✓ ${nmV(e)}`,'']);
+  if(lines.length){x.fillStyle='#B8FF2C';x.font='700 36px BC, sans-serif';x.fillText(st.prs.length?'R E C O R D E S   B A T I D O S':'D E S T A Q U E S',W/2,y);y+=64;
+    lines.forEach(([a,b])=>{x.textAlign='left';x.fillStyle='#F1F5F5';const t=fitText(x,a,b?640:880,`600 #px ${SYS}`,40);x.fillText(t,100,y);if(b){x.textAlign='right';x.fillStyle='#B8FF2C';x.font='800 48px BC, sans-serif';x.fillText(b,W-100,y)}x.textAlign='center';y+=60})}
+  x.fillStyle='rgba(241,245,245,.45)';x.font=`500 30px ${SYS}`;x.fillText('training-core.github.io/app',W/2,1800);
+  return await new Promise(r=>c.toBlob(r,'image/png'));
+}
+let storyCache=null;
+function prepStory(s){storyCache={id:s.id,p:storyBlob(s).then(b=>{storyCache.file=new File([b],'meu-treino.png',{type:'image/png'});return storyCache.file}).catch(()=>null)}}
+async function shareStory(s){
+  if(!storyCache||storyCache.id!==s.id)prepStory(s);
+  const file=storyCache.file||await storyCache.p;
+  if(!file){toast('Não deu para gerar a imagem');return}
+  if(navigator.canShare&&navigator.canShare({files:[file]})){
+    try{await navigator.share({files:[file]});return}
+    catch(e){if(e&&e.name==='AbortError')return}
+  }
+  storyFallback(file,s);
+}
+function storyFallback(file,s){
+  const url=URL.createObjectURL(file);
+  openSheet(`<div class="shead"><button class="rbtn" id="stX" aria-label="Fechar">${I.x}</button><span class="t">Stories</span><span style="width:44px"></span></div>
+    <img src="${url}" alt="Imagem do treino" style="width:72%;display:block;margin:6px auto 0;border-radius:22px;border:1px solid var(--line)">
+    ${navigator.canShare?`<button class="bigcta" id="stSh">Compartilhar</button>`:''}
+    <p class="muted hint" style="text-align:center">Ou segure a imagem e toque em “Salvar na Fotos”, depois poste nos Stories.</p>`);
+  document.getElementById('stX').onclick=closeSheet;
+  const b=document.getElementById('stSh');if(b)b.onclick=async()=>{try{await navigator.share({files:[file]})}catch(e){}};
+}
+
+/* ================= IA (v11) — monta fichas via Supabase Edge Function ================= */
+const AI_FN=SB_URL+'/functions/v1/gerar-ficha';
+let AIS={st:'idle',res:null,err:'',req:''};
+const TIPO={c:'composto',i:'isolado',k:'core',kt:'isometria/tempo',x:'cardio'};
+function aiLib(){
+  const ng=PROFILE.noGym||[],lim=limAv();
+  return LIBRAW.map(r=>LIBX[r[0]]).filter(L=>(PROFILE.equip.includes(L.eq)||L.eq==='cardio')&&!PROFILE.avoid.includes(L.k)&&!ng.includes(L.k)&&!lim.includes(L.k))
+    .map(L=>`${L.k}|${L.n}|${SLOTNAME[L.slot]||L.slot}|${TIPO[L.t]||L.t}|${(VARS[L.k]||[]).map(v=>v[0]).join(',')}`).join('\n');
+}
+function aiProfile(){
+  const P=PROFILE,q=P.quiz||{};
+  const FOC={core:'abdômen e cintura',glute:'glúteos e pernas',upper:'peitoral e ombros',arms:'braços',trap:'costas e trapézio'};
+  const PL={full:'academia completa',small:'academia pequena',homeDb:'em casa com halteres',home:'em casa sem equipamento'};
+  const last=[...MED].reverse().find(x=>x.peso>0);
+  return{nome:(P.name||'').split(' ')[0]||undefined,objetivo:OBJ[P.obj],nivel:LEVEL[P.level],faixaIdade:q.age?q.age+'+ anos':undefined,
+    treinosPorSemana:P.freq,minutosPorTreino:P.min,local:PL[q.place]||undefined,equipamentos:P.equip.map(e=>EQNAME[e]),
+    foco:P.focus.map(f=>FOC[f]).filter(Boolean),regioesSensiveis:(P.limits||[]).map(l=>LIMITS[l].n),
+    cardio:P.cardio?`${P.cardio} min no fim (${LIBX[P.cardioKey]?LIBX[P.cardioKey].n:'esteira'})`:'sem cardio',
+    alturaCm:P.height||undefined,pesoKg:last?last.peso:undefined,pesoMetaKg:P.goalW||undefined,observacoes:P.aiNotes||undefined};
+}
+function aiParse(j){
+  if(!j||!Array.isArray(j.fichas))throw new Error('A IA respondeu num formato inesperado. Tente de novo.');
+  const fichas=j.fichas.slice(0,7).map(f=>{
+    const ex=(f.ex||[]).map(o=>{const L=LIBX[o.k];if(!L)return null;const vl=VARS[L.k]||[];
+      const cardio=L.t==='x';const sc=scheme(L.t,L.slot);
+      return{id:nid(),key:L.k,name:L.n,img:L.k,sets:cardio?'':String(o.s||sc.sets),reps:String(o.r||sc.reps).replace(/-/g,'–'),note:String(o.obs||'').slice(0,60),v:vl.some(v=>v[0]===o.v)?o.v:'',slot:L.slot}}).filter(Boolean);
+    return{nome:String(f.nome||'Treino').slice(0,40),foco:String(f.foco||'').slice(0,140),ex}}).filter(f=>f.ex.length);
+  if(!fichas.length)throw new Error('A IA não montou nenhuma ficha válida. Tente de novo.');
+  return{resumo:String(j.resumo||''),divisao:j.divisao,fichas};
+}
+async function aiRun(adj){
+  if(!AUTH){toast('Entre na sua conta para usar a IA');return}
+  AIS.st='load';AIS.err='';if(view.name!=='ai')go({name:'ai'});else{lastKey='';render();scrollTo(0,0)}
+  try{
+    if(!navigator.onLine)throw new Error('Sem internet. Conecte e tente de novo.');
+    if(!await ensureToken())throw new Error('Entre na sua conta de novo para usar a IA.');
+    const body={perfil:aiProfile(),biblioteca:aiLib(),pedido:adj||'',atual:adj&&AIS.res?AIS.res.fichas.map(f=>({nome:f.nome,ex:f.ex.map(e=>[e.key,e.sets,e.reps,e.v||''])})):null};
+    const r=await fetch(AI_FN,{method:'POST',headers:{'Content-Type':'application/json',apikey:SB_KEY,Authorization:'Bearer '+AUTH.access_token},body:JSON.stringify(body)});
+    let j=null;try{j=await r.json()}catch(e){}
+    if(!r.ok)throw new Error((j&&j.error)||(r.status===404?'A IA ainda não foi ativada no servidor.':'Erro '+r.status));
+    AIS.res=aiParse(j);AIS.st='ok';AIS.req='';
+  }catch(e){AIS.st='err';AIS.err=e.message||'Não deu certo.'}
+  if(view.name==='ai'){lastKey='';animOn=true;render();scrollTo(0,0)}
+}
+const AIMSG=['Lendo suas respostas','Escolhendo exercícios da sua academia','Definindo pegadas e variações','Ajustando séries ao seu tempo','Equilibrando o volume da semana'];
+let aiMsgT=null;
+function renderAI(){
+  clearInterval(aiMsgT);const q=id=>document.getElementById(id);
+  const back=`<div class="top"><button class="rbtn glass" id="aiB" aria-label="Voltar">${I.back}</button><span></span></div>`;
+  if(AIS.st==='load'){
+    app.innerHTML=`${back}<div class="aiload"><div class="aiorb"><i></i><i></i><i></i><span>✨</span></div>
+      <h1 class="qq" style="text-align:center">Montando sua ficha</h1><p class="qsub aimsg" id="aiMsg" style="text-align:center">${AIMSG[0]}…</p>
+      <div class="tchips aichips">${aiChips().map((c,i)=>`<span style="--i:${i}">${esc(c)}</span>`).join('')}</div></div>`;
+    let n=0;aiMsgT=setInterval(()=>{const m=q('aiMsg');if(!m||AIS.st!=='load'){clearInterval(aiMsgT);return}n=(n+1)%AIMSG.length;m.classList.remove('in');void m.offsetWidth;m.textContent=AIMSG[n]+'…';m.classList.add('in')},2200);
+    q('aiB').onclick=()=>go({name:'home'});return;
+  }
+  if(AIS.st==='err'||!AIS.res){
+    app.innerHTML=`${back}<div class="qwrap"><h1 class="qq">A IA não respondeu</h1><p class="qsub">${esc(AIS.err||'Tente de novo em instantes.')}</p>
+      <button class="bigcta" id="aiTry">Tentar de novo</button><button class="bigcta dark" id="aiMod">Ver modelos prontos</button></div>`;
+    q('aiB').onclick=()=>go({name:'home'});q('aiTry').onclick=()=>aiRun(AIS.req);q('aiMod').onclick=()=>go({name:'modelos'});return;
+  }
+  const R0=AIS.res;const ab='ABCDEFGHIJKLMNOP';
+  app.innerHTML=`${back}<div class="lab2">✨ Feita pela IA para você</div><h1 class="ttl">Sua ficha</h1>
+    ${R0.resumo?`<div class="aisum">${esc(R0.resumo)}</div>`:''}
+    ${R0.fichas.map((f,i)=>`<div class="aific stag" style="--i:${i}"><div class="aifh"><div class="tile">${ab[i]||'★'}</div><div class="grow"><div class="nm">${esc(f.nome)}</div><div class="meta">${f.ex.length} exercícios · ${totalSets(f.ex)} séries · ~${estMin(f.ex)} min</div></div></div>
+      ${f.foco?`<p class="aifoco">${esc(f.foco)}</p>`:''}
+      ${f.ex.map(e=>`<div class="aiex">${thumbHTML(e.img,'thumb','width:46px;height:46px;border-radius:12px')}<div class="grow"><b>${esc(e.name)}</b><span>${esc(detail(e))}${e.note?' · '+esc(e.note):''}</span>${vTag(e)}</div></div>`).join('')}</div>`).join('')}
+    <div class="lbl">Quer ajustar algo?</div>
+    <label class="fld"><span>Peça em palavras simples</span><textarea id="aiReq" rows="2" maxlength="500" placeholder="Ex.: tira o agachamento livre, quero mais ombro, treino mais curto">${esc(AIS.req||'')}</textarea></label>
+    <button class="bigcta dark" id="aiAdj">✨ Ajustar com IA</button>
+    <p class="foot">A IA pode errar. Revise as fichas e ajuste o que quiser depois em Editar.</p>`;
+  q('aiB').onclick=()=>go({name:'home'});
+  q('aiReq').oninput=()=>{AIS.req=q('aiReq').value};
+  q('aiAdj').onclick=()=>{const t=q('aiReq').value.trim();if(!t){q('aiReq').focus();toast('Escreva o que quer mudar');return}AIS.req=t;aiRun(t)};
+  cta.hidden=false;ctaBtn.textContent='Usar estas fichas';ctaBtn.onclick=aiUse;
+}
+function aiChips(){const P=PROFILE;const out=[OBJ[P.obj],LEVEL[P.level],P.freq+'x por semana',P.min+' min'];
+  const FOC={core:'Abdômen',glute:'Glúteos',upper:'Peito e ombros',arms:'Braços',trap:'Costas e trapézio'};P.focus.forEach(f=>FOC[f]&&out.push(FOC[f]));
+  (P.limits||[]).forEach(l=>out.push('Cuidado: '+LIMITS[l].n.toLowerCase()));if(P.aiNotes)out.push('Suas observações');return out}
+function aiUse(){
+  if(!plan.routines.length)return aiApply(true);
+  openSheet(`<div class="shead"><button class="rbtn" id="auX" aria-label="Fechar">${I.x}</button><span class="t">Usar fichas da IA</span><span style="width:44px"></span></div>
+    <p class="muted hint">Você já tem ${plan.routines.length} ${plan.routines.length===1?'ficha':'fichas'}.</p>
+    <button class="bigcta" id="auRep">Substituir minhas fichas</button><button class="bigcta dark" id="auAdd">Adicionar às minhas fichas</button>
+    <p class="foot">Seu histórico de treinos e cargas não é apagado.</p>`);
+  const q=id=>document.getElementById(id);q('auX').onclick=closeSheet;
+  q('auRep').onclick=()=>{closeSheet();aiApply(true)};q('auAdd').onclick=()=>{closeSheet();aiApply(false)};
+}
+function aiApply(replace){
+  const ab='ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+  const used=new Set(replace?[]:plan.routines.map(r=>r.letter));
+  const out=AIS.res.fichas.map(f=>{const L=ab.find(c=>!used.has(c))||'★';used.add(L);
+    return{id:nid(),letter:L,name:f.nome,ex:f.ex.map(e=>({id:nid(),key:e.key,name:e.name,img:e.img,sets:e.sets,reps:e.reps,note:e.note,v:e.v}))}});
+  if(replace)plan.routines=out;else plan.routines.push(...out);
+  if(['fb','ul','ppl'].includes(AIS.res.divisao)){PROFILE.split=AIS.res.divisao;saveProfile()}
+  savePlan();localStorage.removeItem(PVK);tab='fichas';go({name:'home'});toast('Fichas da IA salvas 💪');
 }
 
 /* ================= CLAUDE ================= */
@@ -1857,7 +2193,7 @@ MINHAS FICHAS
 ${planText(plan.routines)}
 
 ÚLTIMOS TREINOS (carga×reps por série)
-${recent.map(s=>`${s.d} — ${s.title}: `+s.ex.filter(e=>doneCount(e)).map(e=>`${e.name} ${fmtLog(e)}`).join('; ')).join('\n')||'nenhum ainda'}
+${recent.map(s=>`${s.d} — ${s.title}: `+s.ex.filter(e=>doneCount(e)).map(e=>`${nmV(e)} ${fmtLog(e)}`).join('; ')).join('\n')||'nenhum ainda'}
 ${analysisText()}${MED.length?`\nMEDIDAS (mais recente): ${Object.entries(MED[MED.length-1]).map(([k,v])=>k+': '+v).join(', ')}`:''}
 
 Minha pergunta: `;
@@ -1925,7 +2261,7 @@ async function shareText(title,text){
   try{if(navigator.share){await navigator.share({title,text});return}}catch(e){if(e&&e.name==='AbortError')return}
   try{await navigator.clipboard.writeText(text);toast('Copiado! Cole onde quiser')}catch(e){toast('Não deu para compartilhar')}
 }
-const planText=rs=>rs.map(r=>`${r.letter==='🔥'?'🔥':'🏋️'} ${r.name.toUpperCase()}\n`+r.ex.map((e,i)=>`${i+1}. ${e.name} — ${detail(e)}${e.note?` (${e.note})`:''}`).join('\n')).join('\n\n');
+const planText=rs=>rs.map(r=>`${r.letter==='🔥'?'🔥':'🏋️'} ${r.name.toUpperCase()}\n`+r.ex.map((e,i)=>`${i+1}. ${nmV(e)} — ${detail(e)}${e.note?` (${e.note})`:''}`).join('\n')).join('\n\n');
 function stepSheet(title,sub,val,min,max,step,unit,onSave){
   let v=val;const draw=()=>{openSheet(`<div class="shead"><button class="rbtn" id="stX" aria-label="Fechar">${I.x}</button><span class="t">${title}</span><span style="width:44px"></span></div>
     <p class="muted" style="text-align:center;margin:4px 0 0">${sub}</p>
@@ -1986,6 +2322,7 @@ function openEdit(r,ex){
   const isNew=!ex;
   const w=ex?{...ex}:{id:nid(),name:'',sets:'3',reps:'10–12',img:null,note:''};
   const draw=()=>{
+    if(w.v&&!varOf(w))w.v='';
     openSheet(`<div class="shead"><button class="rbtn" id="eCancel" aria-label="Cancelar">${I.x}</button><span class="t">${isNew?'Novo exercício':'Editar'}</span><button class="pill lime" id="eSave">Salvar</button></div>
      ${thumbHTML(w.img,'bigimg')}
      <div class="imgopts"><button id="pickLib">Escolher da galeria</button><button id="pickUp">Usar minha foto</button></div>
@@ -1995,6 +2332,7 @@ function openEdit(r,ex){
      <div class="row2"><label class="fld"><span>Séries</span><input id="fSets" value="${esc(w.sets)}" inputmode="numeric" placeholder="vazio p/ cardio"></label>
      <label class="fld"><span>Repetições</span><input id="fReps" value="${esc(w.reps)}" placeholder="10–12"></label></div>
      <label class="fld"><span>Observação</span><input id="fNote" value="${esc(w.note)}" placeholder="Opcional"></label>
+     ${varsOf(w)?`<button class="vbtn" id="eVar" style="margin-top:0;margin-bottom:8px"><span class="vi">✋</span><span class="grow"><small>Pegada / variação</small><b>${esc(varLbl(w)||'Padrão')}</b></span><span class="vt">Trocar</span></button>`:''}
      ${w.img?`<button class="bigcta red" id="rmImg">Remover foto</button>`:''}
      ${!isNew?`<button class="bigcta red" id="eDel">Remover exercício</button>`:''}`);
     const q=id=>document.getElementById(id);
@@ -2003,6 +2341,7 @@ function openEdit(r,ex){
     q('eSave').onclick=()=>{grab();if(!w.name){q('fName').focus();toast('Dê um nome ao exercício');return}
       if(isNew)r.ex.push(w);else Object.assign(ex,w);savePlan();closeSheet();render();toast('Salvo')};
     q('pickLib').onclick=()=>{grab();openLib(w,draw)};
+    if(q('eVar'))q('eVar').onclick=()=>{grab();varSheet(w,v=>{w.v=v;draw()},draw)};
     q('pickUp').onclick=()=>{grab();q('file').click()};
     q('file').onchange=async()=>{const f=q('file').files[0];if(!f)return;try{w.img=await storePhoto(f);draw()}catch(e){toast('Não deu para usar essa foto')}};
     if(q('rmImg'))q('rmImg').onclick=()=>{grab();w.img=null;draw()};
