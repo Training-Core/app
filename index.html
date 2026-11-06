@@ -593,6 +593,21 @@ button:active{transform:scale(.97)}
 .spin{width:18px;height:18px;border-radius:50%;border:2.5px solid rgba(var(--acc-rgb),.25);border-top-color:var(--lime);animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .dateline{color:var(--muted);font-size:15px}
+.aiic{display:block;overflow:visible;width:100%;height:100%}
+.aiic .arm path{fill:none;stroke:var(--ic,var(--lime));stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.aiic .brn path{fill:none;stroke:var(--ic2,color-mix(in srgb,var(--lime) 40%,#2FD9A0));stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.aiic .dot{fill:var(--ic2,color-mix(in srgb,var(--lime) 40%,#2FD9A0))}
+.aiic.glow{filter:drop-shadow(0 0 1.5px var(--ic,var(--lime))) drop-shadow(0 0 5px color-mix(in srgb,var(--ic,var(--lime)) 55%,transparent))}
+.aiic .fa,.aiic .bic{transform-box:view-box}
+.aiic .fa{transform-origin:9px 43px}.aiic .bic{transform-origin:31px 37px}
+.aiic.anim .fa{animation:aiCurl 1.2s ease-in-out infinite}
+.aiic.anim .bic{animation:aiBulge 1.2s ease-in-out infinite}
+@keyframes aiCurl{0%,100%{transform:rotate(14deg)}50%{transform:rotate(-9deg)}}
+@keyframes aiBulge{0%,100%{transform:scale(.8)}50%{transform:scale(1.18)}}
+@media (prefers-reduced-motion:reduce){.aiic.anim .fa,.aiic.anim .bic{animation:none}}
+.aisp .aiic{width:34px;height:34px}
+.aiorb span .aiic{width:54px;height:54px}
+.ainic{width:22px;height:22px;flex:none}
 </style>
 <script>
 /* tema (v12) — aplicado antes de pintar a tela */
@@ -1231,7 +1246,7 @@ function renderFichas(){
   app.innerHTML=`<div class="top"><span class="muted">Seus treinos fixos</span>${avatarBtn()}</div>
     <h1 class="ttl">Fi<em>chas</em></h1>
     <p class="muted hint" style="margin:6px 4px 16px">Ordem: ${plan.routines.map(r=>esc(r.letter)).join(' → ')||'—'} · variação automática ${PROFILE.vary?'ligada':'desligada'}</p>
-    <button class="aicard" id="fAI" style="margin:0 0 14px"><span class="aisp">✨</span><span class="grow"><b>Montar fichas com IA</b><small>Sob medida para o seu perfil, com pegadas e variações.</small></span><span class="chev">${I.chev}</span></button>
+    <button class="aicard" id="fAI" style="margin:0 0 14px"><span class="aisp">${AIIC_SVG()}</span><span class="grow"><b>Montar fichas com IA</b><small>Sob medida para o seu perfil, com pegadas e variações.</small></span><span class="chev">${I.chev}</span></button>
     <div class="list">${list||'<div class="empty">Nenhuma ficha ainda.</div>'}
       <div class="frow"><button class="newbtn" id="newR">${IC.plus.replace('<svg','<svg width="18" height="18"')} Nova ficha</button>
       <button class="newbtn" id="toMod" style="border-color:rgba(var(--fg),.15);color:var(--text)">Modelos prontos</button></div></div>`;
@@ -1751,7 +1766,7 @@ function openMenu(){
     ${AUTH?mItem('mSync',IC.sync,'Sincronizar',syncText()):mItem('mLogin',IC.user,'Entrar com e-mail','Salvar na nuvem')}
     ${mItem('mQuiz',IC.target,'Refazer meu perfil','Objetivo, nível e rotina')}
     ${AUTH?mItem('mOut',IC.out,'Sair deste aparelho','','red'):''}
-    <div class="mfoot">Meu Treino · v12.0</div>`;
+    <div class="mfoot">Meu Treino · v12.1</div>`;
   const b=document.getElementById('menuBtn');if(b){const r=b.getBoundingClientRect();menuEl.style.top=Math.max(8,r.bottom+8)+'px';menuEl.style.right=Math.max(12,innerWidth-r.right)+'px';b.setAttribute('aria-expanded','true')}
   menuEl.classList.add('open');mscrim.classList.add('open');
   const q=id=>document.getElementById(id);const act=(id,f)=>{if(q(id))q(id).onclick=()=>{closeMenu();setTimeout(f,120)}};
@@ -1985,7 +2000,7 @@ function singleSheet(id){
 function genSheet(){
   openSheet(`<div class="shead"><button class="rbtn" id="gfX" aria-label="Fechar">${I.x}</button><span class="t">Gerar fichas</span><span style="width:44px"></span></div>
     <p class="muted hint">Monta fichas novas a partir do seu perfil: <b style="color:var(--text)">${OBJ[PROFILE.obj]}</b> · <b style="color:var(--text)">${SPLIT[PROFILE.split]}</b> · até ${PROFILE.min} min.</p>
-    <button class="aicard" id="gfAI" style="margin-top:12px"><span class="aisp">✨</span><span class="grow"><b>Montar com IA</b><small>A IA monta fichas sob medida, com pegadas e variações.</small></span></button>
+    <button class="aicard" id="gfAI" style="margin-top:12px"><span class="aisp">${AIIC_SVG()}</span><span class="grow"><b>Montar com IA</b><small>A IA monta fichas sob medida, com pegadas e variações.</small></span></button>
     <div class="lbl">Ou pelo gerador automático</div>
     <button class="bigcta" id="gfAdd" style="margin-top:4px">Adicionar às minhas fichas</button>
     <button class="bigcta red" id="gfRep">Substituir minhas fichas atuais</button>
@@ -2089,7 +2104,7 @@ function renderQuiz(){
   app.innerHTML=`<div class="qtop">${(qStep>0||!view.first)?`<button class="rbtn glass" id="qzB" aria-label="Voltar">${I.back}</button>`:'<span style="width:44px"></span>'}${bar}<button class="qskip" id="qzS">${view.first?'Pular':'Fechar'}</button></div>
     <div class="qwrap"><div class="qn">${QBLOCKS[st.b]} · ${st.b+1} de ${QBLOCKS.length}</div><h1 class="qq">${esc(st.q)}</h1>${st.sub?`<p class="qsub">${esc(st.sub)}</p>`:''}${body}
     ${st.opt&&!needBtn?`<button class="linkbtn" id="qzP" style="margin-top:10px">Pular pergunta</button>`:''}
-    ${bits.length>1?`<div class="ainote"><span>✨</span><span>A IA já anotou: <b>${bits.map(esc).join(' · ')}</b></span></div>`:''}</div>`;
+    ${bits.length>1?`<div class="ainote"><span class="ainic">${AIIC_SVG()}</span><span>A IA já anotou: <b>${bits.map(esc).join(' · ')}</b></span></div>`:''}</div>`;
   const q=id=>document.getElementById(id);
   const isLast=qNext(qStep)>=QSTEPS.length;
   const lbl=()=>{const go2=isLast?'Ver meu perfil':'Próximo passo';
@@ -2140,7 +2155,7 @@ function renderQuizResult(){
   const days=(P.days||[]).map(d=>WD[d]).join(' ');
   app.innerHTML=`<div class="qtop"><span style="width:44px"></span><div class="qbar">${QBLOCKS.map(()=>'<i class="on"></i>').join('')}</div><button class="qskip" id="qzS">Fechar</button></div>
     <div class="qwrap"><h1 class="qq">${P.name?esc(P.name.split(' ')[0])+', aqui':'Aqui'} está o seu perfil</h1>
-    <button class="aicard" id="qzAI"><span class="aisp">✨</span><span class="grow"><b>Montar minha ficha com IA</b><small>${AUTH?'Fichas sob medida para as suas respostas, com pegadas e variações.':'Entre na sua conta para usar a IA.'}</small></span><span class="chev">${I.chev}</span></button>
+    <button class="aicard" id="qzAI"><span class="aisp">${AIIC_SVG()}</span><span class="grow"><b>Montar minha ficha com IA</b><small>${AUTH?'Fichas sob medida para as suas respostas, com pegadas e variações.':'Entre na sua conta para usar a IA.'}</small></span><span class="chev">${I.chev}</span></button>
     <div class="box" style="margin-top:16px">
       <div class="lrow"><b style="font-weight:600">Nível</b><span>${LEVEL[P.level]}</span></div>
       <div class="lrow"><b style="font-weight:600">Objetivo</b><span>${OBJ[P.obj]}</span></div>
@@ -2152,7 +2167,7 @@ function renderQuizResult(){
     </div>${qz.injury==='sim'?`<div class="tip" style="margin-top:12px">🩺 Como você teve lesão ou cirurgia recente, vale ter liberação médica antes de aumentar as cargas.</div>`:''}${bmiBox()}
     <div class="lbl">Ou escolha um modelo pronto</div><div class="list">${progCard(best,true)}${recs.slice(1,3).map(m=>progCard(m)).join('')}</div>
     <button class="linkbtn" id="qzAll">Ver todos os modelos</button></div>`;
-  cta.hidden=false;if(AUTH){ctaBtn.textContent='Montar com IA ✨';ctaBtn.onclick=()=>aiRun()}else{ctaBtn.textContent='Usar o plano recomendado';ctaBtn.onclick=()=>progSheet(best)}
+  cta.hidden=false;if(AUTH){ctaBtn.textContent='Montar com IA';ctaBtn.onclick=()=>aiRun()}else{ctaBtn.textContent='Usar o plano recomendado';ctaBtn.onclick=()=>progSheet(best)}
   document.getElementById('qzAI').onclick=()=>AUTH?aiRun():toast('Entre na sua conta para usar a IA');
   const q=id=>document.getElementById(id);
   q('qzS').onclick=()=>go({name:'home'});q('qzAll').onclick=()=>go({name:'modelos'});
@@ -2318,7 +2333,7 @@ function nutAddSheet(){
   openSheet(`<div class="shead"><button class="rbtn" id="naX" aria-label="Fechar">${I.x}</button><span class="t">Registrar refeição</span><span style="width:44px"></span></div>
     <div class="tchips">${MEALS.map(([k,n,ic])=>`<button class="${NADD.meal===k?'on':''}" data-meal="${k}">${ic} ${n}</button>`).join('')}</div>
     <label class="fld" style="margin-top:12px"><span>O que você comeu?</span><textarea id="naT" rows="3" maxlength="500" placeholder="Ex.: 2 ovos mexidos, 1 pão francês e café com leite">${esc(NADD.txt)}</textarea></label>
-    ${NADD.busy?`<div class="aistat"><span class="spin"></span>Calculando com IA…</div>`:`<button class="bigcta" id="naAI">✨ Calcular com IA</button>`}
+    ${NADD.busy?`<div class="aistat"><span class="spin"></span>Calculando com IA…</div>`:`<button class="bigcta" id="naAI">Calcular com IA</button>`}
     ${NADD.err?`<div class="tip" style="margin-top:12px">⚠️ ${esc(NADD.err)}</div>`:''}
     ${R0?`<div class="box" style="margin-top:14px">${R0.map((x,i)=>`<div class="lrow"><b style="font-weight:600">${esc(x.n)}<small style="display:block;color:var(--muted);font-weight:400;font-size:12.5px">${esc(x.q||'')} · P ${Math.round(x.p)} g · C ${Math.round(x.c)} g · G ${Math.round(x.g)} g</small></b><span>${Math.round(x.kcal)} kcal</span></div>`).join('')}
       <div class="lrow"><b>Total</b><span><b>${Math.round(t.kcal)} kcal · ${Math.round(t.p)} g prot</b></span></div></div>
@@ -2340,7 +2355,7 @@ async function nutAI(){
     if(!navigator.onLine)throw new Error('Sem internet.');if(!await ensureToken())throw new Error('Entre na sua conta de novo.');
     const r=await fetch(AI_FN,{method:'POST',headers:{'Content-Type':'application/json',apikey:SB_KEY,Authorization:'Bearer '+AUTH.access_token},body:JSON.stringify({modo:'nutri',texto:NADD.txt})});
     let j=null;try{j=await r.json()}catch(e){}
-    if(!r.ok)throw new Error((j&&j.error)||'Erro '+r.status);
+    if(!r.ok)throw new Error((j&&j.error)||((r.status===546||r.status===504)?'A IA demorou demais. Tente de novo.':'Erro '+r.status));
     const its=(j&&j.itens||[]).map(x=>({n:String(x.nome||'Item').slice(0,60),q:String(x.qtd||'').slice(0,40),kcal:Math.max(0,+x.kcal||0),p:Math.max(0,+x.p||0),c:Math.max(0,+x.c||0),g:Math.max(0,+x.g||0)})).filter(x=>x.kcal||x.p);
     if(!its.length)throw new Error('A IA não reconheceu os alimentos. Tente descrever com quantidades.');
     NADD.res=its;
@@ -2427,6 +2442,12 @@ function storyFallback(file,s){
   const b=document.getElementById('stSh');if(b)b.onclick=async()=>{try{await navigator.share({files:[file]})}catch(e){}};
 }
 
+const AIIC_SVG=(cls='',st='')=>`<svg class="aiic ${cls}" style="${st}" viewBox="0 0 64 64" aria-hidden="true"><g class="arm">
+<g class="fa"><path d="M15 9 Q15 4 20 4 L26 5 Q30 6 29.5 11 Q29.5 16 25.5 18.5 L17 18.5 Q14 16 15 9Z"/><path d="M19 10 L25 10"/><path d="M18.5 14 L25 14"/><path d="M16.5 18.5 Q10 30 8.5 41"/><path d="M25 18.5 Q23.5 28 22 36.5"/></g>
+<path d="M8.5 41 Q8 50 17 50 L39 50"/><path class="bic" d="M22 36.5 Q26.5 24.5 33.5 28 Q39 31 40 37.5"/></g>
+<g class="brn"><path d="M41.5 33 Q40.5 25 47 24 Q51 20.5 56 24 Q62 25 61 32 Q64 37 60 42 Q60 49 53 49 Q49 52.5 44.5 49 Q38.5 48 39.5 42 Q37 37 41.5 33Z"/><path d="M50.5 24 L50.5 31.5 L45.5 35.5"/><path d="M50.5 31.5 L56 34.5 L56 40.5"/><path d="M45.5 42 L50.5 42 L52.5 46.5"/></g>
+<circle class="dot" cx="45.5" cy="35.5" r="1.7"/><circle class="dot" cx="56" cy="40.5" r="1.7"/><circle class="dot" cx="52.5" cy="46.5" r="1.7"/></svg>`;
+
 /* ================= IA (v11) — monta fichas via Supabase Edge Function ================= */
 const AI_FN=SB_URL+'/functions/v1/gerar-ficha';
 let AIS={st:'idle',res:null,err:'',req:''};
@@ -2434,7 +2455,7 @@ const TIPO={c:'composto',i:'isolado',k:'core',kt:'isometria/tempo',x:'cardio'};
 function aiLib(){
   const ng=PROFILE.noGym||[],lim=limAv();
   return LIBRAW.map(r=>LIBX[r[0]]).filter(L=>(PROFILE.equip.includes(L.eq)||L.eq==='cardio')&&!PROFILE.avoid.includes(L.k)&&!ng.includes(L.k)&&!lim.includes(L.k))
-    .map(L=>`${L.k}|${L.n}|${SLOTNAME[L.slot]||L.slot}|${TIPO[L.t]||L.t}|${(VARS[L.k]||[]).map(v=>v[0]).join(',')}`).join('\n');
+    .map(L=>`${L.k}|${SLOTNAME[L.slot]||L.slot}|${TIPO[L.t]||L.t}|${(VARS[L.k]||[]).map(v=>v[0]).join(',')}`).join('\n');
 }
 function aiProfile(){
   const P=PROFILE,q=P.quiz||{};
@@ -2469,7 +2490,7 @@ async function aiRun(adj){
     const body={perfil:aiProfile(),biblioteca:aiLib(),pedido:adj||'',atual:adj&&AIS.res?AIS.res.fichas.map(f=>({nome:f.nome,ex:f.ex.map(e=>[e.key,e.sets,e.reps,e.v||''])})):null};
     const r=await fetch(AI_FN,{method:'POST',headers:{'Content-Type':'application/json',apikey:SB_KEY,Authorization:'Bearer '+AUTH.access_token},body:JSON.stringify(body)});
     let j=null;try{j=await r.json()}catch(e){}
-    if(!r.ok)throw new Error((j&&j.error)||(r.status===404?'A IA ainda não foi ativada no servidor.':'Erro '+r.status));
+    if(!r.ok)throw new Error((j&&j.error)||(r.status===404?'A IA ainda não foi ativada no servidor.':(r.status===546||r.status===504)?'A IA demorou demais para responder. Tente de novo em instantes.':'Erro '+r.status));
     AIS.res=aiParse(j);AIS.st='ok';AIS.req='';
   }catch(e){AIS.st='err';AIS.err=e.message||'Não deu certo.'}
   if(view.name==='ai'){lastKey='';animOn=true;render();scrollTo(0,0)}
@@ -2480,7 +2501,7 @@ function renderAI(){
   clearInterval(aiMsgT);const q=id=>document.getElementById(id);
   const back=`<div class="top"><button class="rbtn glass" id="aiB" aria-label="Voltar">${I.back}</button><span></span></div>`;
   if(AIS.st==='load'){
-    app.innerHTML=`${back}<div class="aiload"><div class="aiorb"><i></i><i></i><i></i><span>✨</span></div>
+    app.innerHTML=`${back}<div class="aiload"><div class="aiorb"><i></i><i></i><i></i><span>${AIIC_SVG('anim glow','--ic:#fff;--ic2:#D6FFF0')}</span></div>
       <h1 class="qq" style="text-align:center">Montando sua ficha</h1><p class="qsub aimsg" id="aiMsg" style="text-align:center">${AIMSG[0]}…</p>
       <div class="tchips aichips">${aiChips().map((c,i)=>`<span style="--i:${i}">${esc(c)}</span>`).join('')}</div></div>`;
     let n=0;aiMsgT=setInterval(()=>{const m=q('aiMsg');if(!m||AIS.st!=='load'){clearInterval(aiMsgT);return}n=(n+1)%AIMSG.length;m.classList.remove('in');void m.offsetWidth;m.textContent=AIMSG[n]+'…';m.classList.add('in')},2200);
@@ -2492,14 +2513,14 @@ function renderAI(){
     q('aiB').onclick=()=>go({name:'home'});q('aiTry').onclick=()=>aiRun(AIS.req);q('aiMod').onclick=()=>go({name:'modelos'});return;
   }
   const R0=AIS.res;const ab='ABCDEFGHIJKLMNOP';
-  app.innerHTML=`${back}<div class="lab2">✨ Feita pela IA para você</div><h1 class="ttl">Sua ficha</h1>
+  app.innerHTML=`${back}<div class="lab2">Feita pela IA para você</div><h1 class="ttl">Sua ficha</h1>
     ${R0.resumo?`<div class="aisum">${esc(R0.resumo)}</div>`:''}
     ${R0.fichas.map((f,i)=>`<div class="aific stag" style="--i:${i}"><div class="aifh"><div class="tile">${ab[i]||'★'}</div><div class="grow"><div class="nm">${esc(f.nome)}</div><div class="meta">${f.ex.length} exercícios · ${totalSets(f.ex)} séries · ~${estMin(f.ex)} min</div></div></div>
       ${f.foco?`<p class="aifoco">${esc(f.foco)}</p>`:''}
       ${f.ex.map(e=>`<div class="aiex">${thumbHTML(e.img,'thumb','width:46px;height:46px;border-radius:12px')}<div class="grow"><b>${esc(e.name)}</b><span>${esc(detail(e))}${e.note?' · '+esc(e.note):''}</span>${vTag(e)}</div></div>`).join('')}</div>`).join('')}
     <div class="lbl">Quer ajustar algo?</div>
     <label class="fld"><span>Peça em palavras simples</span><textarea id="aiReq" rows="2" maxlength="500" placeholder="Ex.: tira o agachamento livre, quero mais ombro, treino mais curto">${esc(AIS.req||'')}</textarea></label>
-    <button class="bigcta dark" id="aiAdj">✨ Ajustar com IA</button>
+    <button class="bigcta dark" id="aiAdj">Ajustar com IA</button>
     <p class="foot">A IA pode errar. Revise as fichas e ajuste o que quiser depois em Editar.</p>`;
   q('aiB').onclick=()=>go({name:'home'});
   q('aiReq').oninput=()=>{AIS.req=q('aiReq').value};
