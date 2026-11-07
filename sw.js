@@ -1,4 +1,4 @@
-const CACHE='meu-treino-v21';
+const CACHE='meu-treino-v22';
 const FILES=['./','./index.html','./manifest.webmanifest','./apple-touch-icon.png','./icon-192.png','./icon-512.png'];
 // cache:'reload' ignora o cache do navegador, para nunca guardar arquivo velho
 self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(FILES.map(f=>new Request(f,{cache:'reload'})))).then(()=>self.skipWaiting()))});
