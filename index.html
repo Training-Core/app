@@ -545,6 +545,23 @@ button:active{transform:scale(.97)}
 @media (min-width:1024px){.sheet .bigimg{max-width:440px;margin-left:auto;margin-right:auto}.wrap{max-width:720px}.sheet{max-width:640px}.cta button{max-width:684px}.tabbar.glass{width:min(calc(100% - 32px),520px)}
   .lin{max-width:560px}.stprev{width:46%}}
 @media (max-width:360px){.hd2{font-size:19px}.hero .nm{font-size:30px}}
+/* v15.1: coach na tela do treino */
+.cqfab{position:fixed;right:max(16px,calc(50% - 342px));bottom:calc(98px + env(safe-area-inset-bottom,0px));z-index:9;display:flex;align-items:center;gap:6px;height:48px;padding:0 18px 0 14px;border-radius:99px;background:var(--card);color:var(--text);border:1px solid rgba(var(--acc-rgb),.45);box-shadow:0 10px 28px -8px rgba(0,0,0,.35),0 0 0 4px rgba(var(--acc-rgb),.10);font-size:15px}
+.cqfab span{font-size:19px}.cqfab b{font-weight:700}
+.exs{padding-bottom:64px}
+.ex.chl{animation:cqhl 1.2s ease-in-out 3;box-shadow:0 0 0 2px rgba(var(--acc-rgb),.7)}
+@keyframes cqhl{50%{background:rgba(var(--acc-rgb),.16)}}
+.cqnote{position:relative;display:flex;gap:12px;margin-top:14px;padding:14px 40px 14px 14px;border-radius:22px;border:1px solid rgba(var(--acc-rgb),.4);background:radial-gradient(130% 120% at 0% 0%,rgba(var(--acc-rgb),.16),transparent 60%),var(--card);font-size:14.5px;line-height:1.4}
+.cqnote .cqi{font-size:20px}.cqnote small{display:block;color:var(--acct);font-weight:700;font-size:12px;margin-bottom:2px}
+.cqbtns{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.cqbtns .pill{width:auto;flex:0 0 auto;padding:0 14px;height:36px;font-size:14px}
+.cqclose{position:absolute;top:8px;right:8px;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;color:var(--muted)}.cqclose svg{width:14px;height:14px}
+.cqchips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.cqin{display:flex;gap:8px;align-items:flex-end;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:8px 8px 8px 14px}
+.cqin textarea{flex:1;border:0;background:transparent;color:var(--text);font:inherit;font-size:16px;resize:none;outline:none;min-height:44px}
+.cqin .send{width:42px;height:42px;border-radius:50%;background:var(--lime);color:var(--ink);display:grid;place-items:center;flex-shrink:0}.cqin .send svg{width:18px;height:18px}
+.cqload{display:flex;flex-direction:column;align-items:center;gap:8px;padding:34px 10px 40px;text-align:center}.cqload small{color:var(--muted)}
+.cqspin{width:44px;height:44px;border-radius:50%;border:4px solid rgba(var(--acc-rgb),.2);border-top-color:var(--lime);animation:spin .8s linear infinite;margin-bottom:6px}
+[data-rm="1"] .ex.chl{animation:none}
 /* v15: coach e notificações */
 .coachbtn{width:44px;height:44px;border-radius:50%;background:var(--card);border:1px solid var(--line);display:grid;place-items:center;color:var(--acct);margin-right:8px;flex-shrink:0}
 .pill.ai{background:rgba(var(--acc-rgb),.14);color:var(--acct);border:1px solid rgba(var(--acc-rgb),.25)}
@@ -1321,7 +1338,7 @@ let lastKey='',animOn=true;
 function render(){
   if(!AUTH&&!isGuest()){lastKey='login';return renderLogin()}
   if(view.name==='save'){lastKey='save';app.classList.remove('enter-r','enter-l','enter-f');tabbar.hidden=true;return renderLogin()}
-  {const cb=document.getElementById('coachBar');if(cb&&view.name!=='coach')cb.remove()}
+  {const cb=document.getElementById('coachBar');if(cb&&view.name!=='coach')cb.remove();const fb=document.getElementById('rCoach');if(fb&&view.name!=='routine')fb.remove()}
   if(view.name==='coach'){lastKey='coach';app.classList.remove('enter-r','enter-l','enter-f');tabbar.hidden=true;cta.hidden=true;return renderCoach()}
   if(view.name==='notif'){lastKey='notif';app.classList.remove('enter-r','enter-l','enter-f');tabbar.hidden=true;cta.hidden=true;return renderNotif()}
   const key=view.name==='home'?'tab:'+tab:view.name+':'+view.id;
@@ -1460,7 +1477,7 @@ function renderRoutine(r){
   const rows=r.ex.map((e,i)=>{
     if(editing&&!gen)return `<div class="ex editing" data-ex="${e.id}"><button class="minus" data-del="${i}" aria-label="Remover ${esc(e.name)}">−</button>${thumbHTML(vImg(e),'thumb','width:60px;height:60px')}
       <div class="grow" data-open-ed="${e.id}"><div class="nm">${esc(e.name)}</div><div class="det">${esc(detail(e))}</div>${vTag(e)}</div><span class="handle" aria-label="Arrastar para reordenar">${IC.grip}</span></div>`;
-    return `<div class="ex stag" style="--i:${i}" data-ex="${e.id}" role="button" tabindex="0"><span class="num">${i+1}</span>${thumbHTML(vImg(e))}
+    return `<div class="ex stag${CQ&&CQ.hl&&CQ.hl.has(e.id)?' chl':''}" style="--i:${i}" data-ex="${e.id}" role="button" tabindex="0"><span class="num">${i+1}</span>${thumbHTML(vImg(e))}
       <div class="grow"><div class="nm">${esc(e.name)}</div><div class="det">${esc(detail(e))}</div>${vTag(e)}${e.note?`<div class="note">${esc(e.note)}</div>`:''}${gen&&e.orig?`<div class="note">🔀 no lugar de: ${esc(e.orig)}</div>`:gen&&e.slot&&SLOTNAME[e.slot]?`<div class="note">${SLOTNAME[e.slot]}</div>`:''}</div>
       ${gen&&e.slot!=='cardio'?`<button class="cb" data-swap="${i}" aria-label="Trocar exercício">🔀</button>`:`<span class="chev">${I.chev}</span>`}</div>`}).join('');
   app.innerHTML=`<div class="top sticky"><button class="rbtn glass" id="back" aria-label="Voltar">${I.back}</button>
@@ -1470,7 +1487,9 @@ function renderRoutine(r){
     ${editing&&!gen?`<div class="edithint">${IC.grip.replace('<svg','<svg width="20" height="20" style="flex:none;color:var(--lime)"')}<span>Arraste pela alça para reordenar. Toque no exercício para editar séries, reps e foto.</span></div>`
       :`<div class="chips mt"><span class="chip"><b>${r.ex.length}</b> exercícios</span><span class="chip"><b>${totalSets(r.ex)}</b> séries</span><span class="chip"><b>~${estMin(r.ex)}</b> min</span></div>`}
     ${gen?`<div class="edithint" style="margin-top:12px">🔀<span>${pv.kind==='ficha'&&PROFILE.vary?'Séries e reps seguem sua ficha; alguns exercícios trocam por equivalentes do mesmo grupo para não repetir. ':''}Toque em 🔀 para trocar qualquer um.</span></div>`:''}
+    ${!editing&&r.ex.length?coachNoteHTML(r,gen):''}
     <div class="exs" id="exs">${rows||'<div class="empty">Nenhum exercício ainda.</div>'}</div>
+
     ${editing&&!gen?`<button class="addbtn" id="add">+ Adicionar exercício</button>`:''}`;
   const q=id=>document.getElementById(id);
   q('back').onclick=()=>{if(!gen&&view.from==='fichas'){tab='fichas'}go({name:'home'})};
@@ -1478,6 +1497,7 @@ function renderRoutine(r){
   if(q('rmenu'))q('rmenu').onclick=()=>routineMenu(r);
   if(q('reroll'))q('reroll').onclick=()=>{getPreview(true,pv.pick?pv.rid:undefined);animOn=false;render();animOn=true;toast(pv.kind==='ficha'?'Exercícios variados':'Novo treino gerado')};
   if(q('openF'))q('openF').onclick=()=>go({name:'routine',id:pv.rid});
+  bindCoachNote(r,gen);
   app.querySelectorAll('[data-swap]').forEach(b=>b.onclick=ev=>{ev.stopPropagation();const i=+b.dataset.swap;swapSheet(pv.ex[i],k=>{const o=pv.ex[i];const ne=swapIn(pv.ex,i,k);if(pv.kind==='ficha'){ne.sets=o.sets;ne.reps=o.reps;ne.orig=o.orig||o.name;if(ne.key===exKeyOrig(o))delete ne.orig}ss(PVK,pv);closeSheet();animOn=false;render();animOn=true})});
   if(!editing||gen)app.querySelectorAll('[data-ex]').forEach(el=>el.onclick=ev=>{if(ev.target.closest('[data-swap]'))return;previewEx(r.ex.find(x=>x.id===el.dataset.ex))});
   app.querySelectorAll('[data-open-ed]').forEach(el=>el.onclick=()=>openEdit(r,r.ex.find(x=>x.id===el.dataset.openEd)));
@@ -1995,7 +2015,7 @@ function openMenu(){
   menuEl.classList.add('open');mscrim.classList.add('open');
   const q=id=>document.getElementById(id);const act=(id,f)=>{if(q(id))q(id).onclick=()=>{closeMenu();setTimeout(f,120)}};
   act('mName',profileSheet);act('mLog',()=>logPastSheet());act('mFind',browseLib);act('mGym',()=>go({name:'academia'}));act('mAna',analysisSheet);
-  act('mAj',()=>go({name:'ajustes'}));act('mMod',()=>go({name:'modelos'}));act('mQuiz',()=>startQuiz());act('mClaude',askClaude);act('mShare',()=>shareText('Minhas fichas',planText(plan.routines)));
+  act('mAj',()=>go({name:'ajustes'}));act('mCoach',()=>go({name:'coach'}));act('mNotif',()=>go({name:'notif',from:'menu'}));act('mMod',()=>go({name:'modelos'}));act('mQuiz',()=>startQuiz());act('mClaude',askClaude);act('mShare',()=>shareText('Minhas fichas',planText(plan.routines)));
   if(q('mSync'))q('mSync').onclick=()=>sync();
   act('mLogin',()=>{loginStep='email';go({name:'save'})});
   act('mReset',()=>{if(confirm('Restaurar as fichas originais (A, B, C, D e Core)? Seu histórico continua.')){plan=defaultPlan();plan.routines.forEach(r=>r.ex.forEach(e=>{if(LIBX[e.img])e.key=e.img}));savePlan();localStorage.removeItem(PVK);render();toast('Fichas restauradas')}});
@@ -2795,8 +2815,8 @@ const coachLoad=()=>{if(!COACH)COACH=ls(CHK,{msgs:[]});return COACH};
 const coachSave=()=>{COACH.msgs=COACH.msgs.slice(-40);ss(CHK,COACH)};
 const CHIPS_AJ=['💪 Incluir tríceps','⏱️ Só tenho 30 min','🏠 Vou treinar em casa','🤕 Tô com dor no ombro','🔥 Quero mais pesado'];
 const CHIPS_CH=['📊 Como foi minha semana?','🍗 O que comer antes do treino?','😮‍💨 Tá muito pesado','🎯 Quero focar em glúteo'];
-function coachCtx(){
-  const pv=getPreview();const d7=new Date();d7.setDate(d7.getDate()-7);const k7=dkey(d7);
+function coachCtx(alvo){
+  const pv=alvo||getPreview();const d7=new Date();d7.setDate(d7.getDate()-7);const k7=dkey(d7);
   const semana=sortedSes().filter(s=>s.d>=k7&&s.ex.some(e=>doneCount(e))).slice(-6).map(s=>({d:s.d,titulo:s.title,humor:s.mood||undefined,ex:s.ex.filter(e=>doneCount(e)).map(e=>{const kg=(e.log||[]).filter(x=>x&&x.done&&x.kg).map(x=>x.kg);return [nmV(e),doneCount(e),kg.length?Math.max(...kg):null]})}));
   return{perfil:Object.assign(aiProfile(),{sexo:{f:'feminino',m:'masculino',x:'não informado'}[PROFILE.sex]||undefined,folgaHoje:STKD().closed[today()]==='folga'||undefined}),
     hoje:{titulo:pv.title,ex:pv.ex.map(e=>[exKey(e),e.name,e.sets,e.reps,e.v||''])},semana,
@@ -2864,6 +2884,69 @@ function renderCoach(){
   app.querySelectorAll('[data-apl]').forEach(b=>b.onclick=()=>coachApply(+b.dataset.apl,false));
   app.querySelectorAll('[data-sav]').forEach(b=>b.onclick=()=>coachApply(+b.dataset.sav,true));
   setTimeout(()=>scrollTo(0,document.body.scrollHeight),30);
+}
+
+/* ================= v15.1: COACH NA TELA DO TREINO ================= */
+let CQ=null; // {rid, msg, old, hl:Set}
+async function coachCall(txt,alvo){
+  if(!navigator.onLine)throw new Error('Sem internet. Conecte e tente de novo.');
+  if(!await ensureToken())throw new Error('Entre na sua conta de novo para usar o Coach.');
+  coachLoad();const hist=COACH.msgs.filter(m=>m.t&&!m.err).slice(-6).map(m=>({r:m.r,t:m.t}));
+  const body=Object.assign({modo:'ajuste',msg:txt,hist},coachCtx(alvo));
+  const r=await fetch(COACH_FN,{method:'POST',headers:{'Content-Type':'application/json',apikey:SB_KEY,Authorization:'Bearer '+AUTH.access_token},body:JSON.stringify(body)});
+  let j=null;try{j=await r.json()}catch(e){}
+  if(!r.ok)throw new Error((j&&j.error)||(r.status===404?'O Coach ainda não foi ativado no servidor.':'Erro '+r.status));
+  coachUse=j.usados>0?[j.usados,j.limite]:coachUse;return j;
+}
+function coachQuick(r,gen){
+  if(!AUTH){toast('Entre na sua conta para usar o Coach');loginStep='email';go({name:'save'});return}
+  const pv=gen?getPreview():null;const alvo={title:r.name,ex:r.ex,kind:gen?pv.kind:'ficha'};
+  const form=(msg,opts)=>{openSheet(`<div class="shead"><button class="rbtn" id="cqX" aria-label="Fechar">${I.x}</button><span class="t">✨ Coach</span><span style="width:44px"></span></div>
+    <p class="muted hint" style="margin:0 2px 12px">${msg?esc(msg):'O que você quer mudar em <b style="color:var(--text)">'+esc(r.name)+'</b>? Eu altero na hora.'}</p>
+    <div class="cqchips">${(opts&&opts.length?opts:CHIPS_AJ).map(c=>`<button class="pill ghost" data-cq="${esc(c)}">${esc(c)}</button>`).join('')}</div>
+    <div class="cqin"><textarea id="cqT" rows="2" placeholder="Ex.: troca o supino por crucifixo" aria-label="Mensagem para o Coach"></textarea><button class="send" id="cqS" aria-label="Enviar">${I.arrow}</button></div>`);
+    const q=id=>document.getElementById(id);q('cqX').onclick=closeSheet;
+    const go2=t=>{t=String(t||'').trim();if(t)run(t)};
+    q('cqS').onclick=()=>go2(q('cqT').value);q('cqT').onkeydown=e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();go2(q('cqT').value)}};
+    sheet.querySelectorAll('[data-cq]').forEach(b=>b.onclick=()=>go2(b.dataset.cq.replace(/^\S+\s/,'')));
+    setTimeout(()=>{const t=q('cqT');if(t&&matchMedia('(hover:hover)').matches)t.focus()},350)};
+  const run=async txt=>{
+    sheet.innerHTML=`<div class="grab"></div><div class="cqload"><div class="cqspin"></div><b>Ajustando seu treino…</b><small>${esc(txt)}</small></div>`;
+    try{
+      const j=await coachCall(txt,alvo);coachLoad();
+      COACH.msgs.push({r:'u',t:txt});
+      if(j.treino&&j.treino.ex&&j.treino.ex.length){
+        const old=JSON.parse(JSON.stringify(r.ex));const ex=coachToEx(j.treino);
+        const oldK=new Set(old.map(e=>exKey(e)+'|'+e.sets+'|'+e.reps+'|'+(e.v||'')));
+        const hl=new Set(ex.filter(e=>!oldK.has(e.key+'|'+e.sets+'|'+e.reps+'|'+(e.v||''))).map(e=>e.id));
+        if(gen){const p=getPreview();if(p.kind==='ficha')ex.forEach((e,i)=>{const o=old.find(x=>exKey(x)===e.key);if(!o&&old[i])e.orig=old[i].orig||old[i].name});p.ex=ex;p.ia=1;ss(PVK,p)}
+        else{r.ex=ex.map(e=>({id:e.id,key:e.key,name:e.name,img:e.img,sets:e.sets,reps:e.reps,note:'',v:e.v}));savePlan()}
+        COACH.msgs.push({r:'a',t:j.msg||'Pronto!',treino:j.treino,applied:1});coachSave();
+        CQ={rid:gen?'__gen':r.id,msg:j.msg||'Treino ajustado.',old,hl,gen,pvKind:gen?getPreview().kind:'',pvRid:gen?getPreview().rid:''};
+        closeSheet();animOn=false;render();animOn=true;toast('Treino atualizado ✨');
+        setTimeout(()=>{const f=document.querySelector('.ex.chl');if(f)f.scrollIntoView({behavior:'smooth',block:'center'})},380);
+        setTimeout(()=>{if(CQ)CQ.hl=new Set();document.querySelectorAll('.ex.chl').forEach(e=>e.classList.remove('chl'))},4000);
+      }else{COACH.msgs.push({r:'a',t:j.msg||'…',opcoes:j.opcoes||[]});coachSave();form(j.msg||'Pode detalhar o que quer mudar?',j.opcoes)}
+    }catch(e){form('⚠️ '+(e.message||'Não deu certo. Tente de novo.'))}
+  };
+  form();
+}
+function coachNoteHTML(r,gen){
+  if(!CQ||CQ.rid!==(gen?'__gen':r.id))return '';
+  return `<div class="cqnote"><span class="cqi">✨</span><div class="grow"><small>Coach</small><div>${esc(CQ.msg)}</div>
+    <div class="cqbtns"><button class="pill ghost" id="cqUndo">↩︎ Desfazer</button>${gen&&CQ.pvKind==='ficha'?`<button class="pill ai" id="cqSave">Salvar na ficha</button>`:''}<button class="pill ghost" id="cqMore">Pedir outra mudança</button></div></div>
+    <button class="cqclose" id="cqClose" aria-label="Fechar">${I.x}</button></div>`;
+}
+function bindCoachNote(r,gen){
+  const q=id=>document.getElementById(id);
+  let fab=q('rCoach');if(!editing&&r.ex.length){if(!fab){fab=document.createElement('button');fab.id='rCoach';fab.className='cqfab';fab.setAttribute('aria-label','Ajustar com o Coach');fab.innerHTML='<span>✨</span><b>Coach</b>';document.body.appendChild(fab)}}else if(fab)fab.remove();
+  if(q('rCoach'))q('rCoach').onclick=()=>coachQuick(r,gen);
+  if(q('cqClose'))q('cqClose').onclick=()=>{CQ=null;animOn=false;render();animOn=true};
+  if(q('cqMore'))q('cqMore').onclick=()=>coachQuick(r,gen);
+  if(q('cqUndo'))q('cqUndo').onclick=()=>{if(!CQ)return;if(gen){const p=getPreview();p.ex=CQ.old;ss(PVK,p)}else{r.ex=CQ.old;savePlan()}CQ=null;animOn=false;render();animOn=true;toast('Voltou como estava')};
+  if(q('cqSave'))q('cqSave').onclick=()=>{const p=getPreview();const f=R(p.rid);if(!f){toast('Ficha não encontrada');return}
+    if(!confirm(`Salvar essas mudanças na ficha "${f.name}"? Seu histórico não muda.`))return;
+    f.ex=p.ex.map(e=>({id:nid(),key:e.key||exKey(e),name:e.name,img:e.img,sets:e.sets,reps:e.reps,note:'',v:e.v||''}));savePlan();CQ=null;animOn=false;render();animOn=true;toast('Salvo na ficha ✅')};
 }
 
 /* ================= v15: NOTIFICAÇÕES (Web Push) ================= */
@@ -3575,13 +3658,13 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden){if(AUTH)s
 setTimeout(()=>{const s=document.getElementById('splash');s.classList.add('hide');setTimeout(()=>s.remove(),500)},matchMedia('(prefers-reduced-motion: reduce)').matches?300:1300);
 if(AUTH)setTimeout(()=>sync(),800);
 /* v14: novidades da versão */
-const APPVER='15.0';
-const NOVS=[['💬','Coach','Converse com a IA sobre seu treino, sua semana e alimentação. Botão de chat no topo.'],
+const APPVER='15.1';
+const NOVS=[['💬','Coach','Converse com a IA sobre seu treino, sua semana e alimentação. Na aba Coach.'],
  ['✨','Ajustar o treino com IA','Peça "inclui tríceps" ou "só tenho 30 min" e a IA refaz o treino de hoje.'],
- ['🔔','Notificações','Lembrete na hora do treino, ofensiva em risco e resumo da semana. Em Ajustes.'],
+ ['🔔','Notificações','Lembrete na hora do treino, ofensiva em risco e resumo da semana. No menu.'],
  ['👩','Perfil Ela, Ele ou Neutro','Cores, saudações e sugestões para cada perfil. Em Ajustes.'],
  ['💤','Folga sem perder a ofensiva','Um toque na tela inicial.'],
- ['🔁','Treino sem repetir','O treino do dia troca primeiro a pegada e só depois o exercício.'],
+ ['🔁','Variação inteligente','O treino do dia troca primeiro a pegada e só depois o exercício.'],['✨','Coach dentro do treino','Toque em Coach na tela do treino, peça a mudança e a lista atualiza na hora.'],
  ['⚠️','Aviso de grupo faltando','Se um músculo não entrou na semana, o app avisa e inclui.'],
  ['🧘','Mobilidade antes do treino','5 minutos com animação e passo a passo.'],
  ['✋','Novos puxadores','Foto do puxador e animação certa para cada pegada.'],
