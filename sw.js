@@ -1,4 +1,4 @@
-const CACHE='meu-treino-v23';
+const CACHE='meu-treino-v24';
 const FILES=['./','./index.html','./manifest.webmanifest','./apple-touch-icon.png','./icon-192.png','./icon-512.png'];
 // cache:'reload' ignora o cache do navegador, para nunca guardar arquivo velho
 self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(FILES.map(f=>new Request(f,{cache:'reload'})))).then(()=>self.skipWaiting()))});
@@ -14,3 +14,9 @@ self.addEventListener('fetch',e=>{
     return hit||net;
   }));
 });
+
+// v15: notificações
+self.addEventListener('push',e=>{let d={};try{d=e.data?e.data.json():{}}catch(_){d={title:'My Training',body:e.data?e.data.text():''}}
+  e.waitUntil(self.registration.showNotification(d.title||'My Training',{body:d.body||'',tag:d.tag||'mt',icon:'icon-192.png?v=3',badge:'icon-192.png?v=3',data:{url:d.url||'./'}}))});
+self.addEventListener('notificationclick',e=>{e.notification.close();const url=(e.notification.data&&e.notification.data.url)||'./';
+  e.waitUntil(clients.matchAll({type:'window',includeUncontrolled:true}).then(cs=>{for(const c of cs){if('focus' in c)return c.focus()}return clients.openWindow(url)}))});
