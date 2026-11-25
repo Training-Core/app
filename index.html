@@ -918,6 +918,22 @@ html[data-glass="1"][data-rm="1"] body::after{filter:brightness(.4)}
 
 .xcard small b{display:inline;font-size:inherit;color:var(--text)}
 .hacts{flex-wrap:wrap}
+
+/* v17.1: montar ficha */
+.qbobj{display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:12px 14px;border-radius:20px;background:rgba(var(--acc-rgb),.14);border:1px solid rgba(var(--acc-rgb),.4)}
+.qbobj small{display:block;color:var(--muted);font-size:12.5px}.qbobj b{display:block;font-size:17px;margin:1px 0}.qbobj .pill{height:34px;padding:0 14px;font-size:13px}
+.qbrow{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:2px}.qbrow.wrap{flex-wrap:wrap}.qbrow::-webkit-scrollbar{display:none}
+.qbp{flex:none;padding:9px 14px;border-radius:99px;background:var(--card);border:1px solid var(--line);font-size:14px;font-weight:600;white-space:nowrap}
+.qbp.on{background:var(--lime);color:var(--ink);border-color:transparent}
+.qbgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.qbc{display:flex;flex-direction:column;align-items:center;gap:4px;padding:12px 6px;border-radius:18px;background:var(--card);border:1.5px solid var(--line);font-size:13px;font-weight:600;text-align:center;line-height:1.2}
+.qbc span{font-size:22px}.qbc.on{border-color:var(--lime);background:rgba(var(--acc-rgb),.16)}
+.qbzero{display:block;width:100%;margin-top:12px;padding:12px;border-radius:18px;border:1.5px dashed var(--line);font-weight:600;font-size:14.5px}
+.qbl{display:flex;flex-direction:column;gap:6px}.qbx{display:flex;align-items:center;gap:10px;padding:8px 8px 8px 8px;border-radius:16px;background:var(--card);border:1px solid var(--line)}
+.qbx .thumb{width:48px;height:48px;border-radius:12px;flex:none}.qbx b{display:block;font-size:14.5px}.qbx small{color:var(--acct);font-weight:600;font-size:13px}.qbx .rbtn{width:38px;height:38px;font-size:16px}
+.lbl small{font-weight:500;text-transform:none;letter-spacing:0}
+.cqfab,#rCoach{display:none!important}
+.qbdv b,.qbdv small{display:block}.qbdv small{color:var(--muted);font-size:12.5px;margin-top:2px}
 </style>
 <script>
 /* tema (v12) — aplicado antes de pintar a tela */
@@ -966,7 +982,7 @@ applyTheme();
 <button class="tab on" data-tab="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 6.5v11M17.5 6.5v11M3.5 9v6M20.5 9v6M6.5 12h11"/></svg>Treino</button>
 <button class="tab" data-tab="fichas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17" rx="2.5"/><path d="M9 4V3h6v1M9 10h6M9 14h6M9 18h3"/></svg>Fichas</button>
 <button class="tab" data-tab="galera"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c.6-3.2 2.8-5 5.5-5s4.9 1.8 5.5 5"/><circle cx="17" cy="9" r="2.6"/><path d="M15.5 14.2c2.6-.3 4.5 1.3 5 4.3"/></svg>Galera</button>
-<button class="tab" data-tab="coach"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/><path d="M8.5 11h.01M12 11h.01M15.5 11h.01"/></svg>Coach</button>
+<button class="tab" data-tab="nutri"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7c-1.5-2-5-2.2-6.5.3C4 9.8 5 15 7.5 18c1.2 1.5 2.6 2 4.5 1 1.9 1 3.3.5 4.5-1C19 15 20 9.8 18.5 7.3 17 4.8 13.5 5 12 7z"/><path d="M12 7c0-2 1-3.5 3-4"/></svg>Nutri</button>
 <button class="tab" data-tab="evo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg>Evolução</button>
 
 </div></nav>
@@ -2132,7 +2148,7 @@ function openMenu(){
     ${mItem('mMod',IC.list,'Modelos de treino')}
     ${mItem('mBib',IC.search,'Biblioteca','870+ exercícios, em casa, mobilidade')}
     ${mItem('mImp',IC.calplus,'Importar ficha por foto','A IA lê a ficha do personal')}
-    ${mItem('mNutri',IC.target,'Meu Nutri','Calorias, proteína e água')}
+
     ${mItem('mGym',IC.gym,'Minha academia')}
     ${mItem('mAna',IC.chart,'Análise de 30 dias')}
     ${mItem('mAj',IC.sliders,'Ajustes do treino')}
@@ -2140,7 +2156,6 @@ function openMenu(){
     ${mItem('mLoja',IC.bag,'Loja','Em breve')}
     <div class="msep"></div>
     ${AUTH?mItem('mSync',IC.sync,'Sincronizar',syncText()):mItem('mLogin',IC.user,'Entrar com e-mail','Salvar na nuvem')}
-    ${mItem('mCoach',IC.spark,'Coach','Converse com a IA sobre seu treino')}
     ${mItem('mNotif',IC.timer,'Notificações',pushOn()?'Ligadas':'Lembrete, ofensiva e resumo')}
     ${mItem('mQuiz',IC.target,'Refazer meu perfil','Objetivo, nível e rotina')}
     ${mItem('mConta',IC.user,'Conta e privacidade','Termos, seus dados, excluir conta')}
@@ -2152,7 +2167,7 @@ function openMenu(){
   menuEl.classList.add('open');mscrim.classList.add('open');
   const q=id=>document.getElementById(id);const act=(id,f)=>{if(q(id))q(id).onclick=()=>{closeMenu();setTimeout(f,120)}};
   act('mName',profileSheet);act('mLog',()=>logPastSheet());act('mFind',browseLib);act('mGym',()=>go({name:'academia'}));act('mAna',analysisSheet);
-  act('mAj',()=>go({name:'ajustes'}));act('mCoach',()=>go({name:'coach'}));act('mNotif',()=>go({name:'notif',from:'menu'}));act('mMod',()=>go({name:'modelos'}));act('mQuiz',()=>startQuiz());act('mLoja',lojaSheet);act('mBib',bibSheet);act('mImp',importFotoSheet);act('mNutri',()=>setTab('nutri'));act('mConta',contaSheet);act('mFale',()=>feedbackSheet('fale'));act('mSug',()=>feedbackSheet('ideia'));act('mShare',()=>shareText('Minhas fichas',planText(plan.routines)));
+  act('mAj',()=>go({name:'ajustes'}));act('mNotif',()=>go({name:'notif',from:'menu'}));act('mMod',()=>go({name:'modelos'}));act('mQuiz',()=>startQuiz());act('mLoja',lojaSheet);act('mBib',bibSheet);act('mImp',importFotoSheet);act('mNutri',()=>setTab('nutri'));act('mConta',contaSheet);act('mFale',()=>feedbackSheet('fale'));act('mSug',()=>feedbackSheet('ideia'));act('mShare',()=>shareText('Minhas fichas',planText(plan.routines)));
   if(q('mSync'))q('mSync').onclick=()=>sync();
   act('mLogin',()=>{loginStep='email';go({name:'save'})});
   act('mReset',()=>{if(confirm('Restaurar as fichas originais (A, B, C, D e Core)? Seu histórico continua.')){plan=defaultPlan();plan.routines.forEach(r=>r.ex.forEach(e=>{if(LIBX[e.img])e.key=e.img}));savePlan();localStorage.removeItem(PVK);render();toast('Fichas restauradas')}});
@@ -3083,7 +3098,7 @@ function coachNoteHTML(r,gen){
 }
 function bindCoachNote(r,gen){
   const q=id=>document.getElementById(id);
-  let fab=q('rCoach');if(!editing&&r.ex.length){if(!fab){fab=document.createElement('button');fab.id='rCoach';fab.className='cqfab';fab.setAttribute('aria-label','Ajustar com o Coach');fab.innerHTML='<span>✨</span><b>Coach</b>';document.body.appendChild(fab)}}else if(fab)fab.remove();
+  let fab=q('rCoach');if(false){if(!fab){fab=document.createElement('button');fab.id='rCoach';fab.className='cqfab';fab.setAttribute('aria-label','Ajustar com o Coach');fab.innerHTML='<span>✨</span><b>Coach</b>';document.body.appendChild(fab)}}else if(fab)fab.remove();
   if(q('rCoach'))q('rCoach').onclick=()=>coachQuick(r,gen);
   if(q('cqClose'))q('cqClose').onclick=()=>{CQ=null;animOn=false;render();animOn=true};
   if(q('cqMore'))q('cqMore').onclick=()=>coachQuick(r,gen);
@@ -4202,6 +4217,102 @@ function importReview(F){const L='ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');const us
     <button class="bigcta" id="irOk">Adicionar às minhas fichas</button>`);
   document.getElementById('irB').onclick=importFotoSheet;document.getElementById('irOk').onclick=()=>{plan.routines.push(...rs);savePlan();localStorage.removeItem(PVK);closeSheet();tab='fichas';go({name:'home'});toast(rs.length+' ficha'+(rs.length>1?'s importadas':' importada'))}}
 
+/* ======================================================================
+   v17.1 — montar ficha rápida (sem IA) e sem Coach
+   ====================================================================== */
+const QT={
+ pt:n=>({base:['chest','chest','chesti','shpress','tri','tri'],acc:[n%2?'chesti':'shlat'],core:[]}),
+ cb:n=>({base:['backv','backh','backh','rear','bi','bi'],acc:[n%2?'backv':'trap'],core:[]}),
+ pg:n=>({base:['quad','post','glute','quadi','glute','calf'],acc:['adduct'],core:['abs']}),
+ gl:n=>({base:['glute','glute','post','quad','glute'],acc:['adduct',n%2?'post':'quadi'],core:[]}),
+ ob:n=>({base:['shpress','shlat','rear','bi','tri','bi','tri'],acc:['trap'],core:[]}),
+ co:n=>({base:['abs','obl','abs','lower','obl'],acc:['abs'],core:[]})};
+const _dayTemplate=dayTemplate;
+dayTemplate=function(dt,n){return QT[dt]?QT[dt](n||0):_dayTemplate(dt,n)};
+let QB_HOME=null;
+const _candidates=candidates;
+candidates=function(slot,exclude=[]){const c=_candidates(slot,exclude);if(!QB_HOME)return c;
+  const ok=L=>QB_HOME.includes(L.eq)&&L.cat!=='m';
+  const own=c.filter(ok);if(own.length>=2)return own;
+  const ext=Object.values(LIBX).filter(L=>L.ext&&L.slot===slot&&ok(L)&&L.cat==='f'&&L.n!==L.en&&!/neck|drill|pescoço/i.test(L.en+' '+L.n)&&L.lv<=2&&!exclude.includes(L.k)&&!(PROFILE.avoid||[]).includes(L.k));
+  return own.concat(ext)};
+let QB=null;
+const QFOCO=[['fb','🏋️','Corpo todo'],['U','💪','Superiores'],['L','🦵','Inferiores'],['pt','🫸','Peito e tríceps'],['cb','🫷','Costas e bíceps'],['pg','🦵','Pernas e glúteos'],['gl','🍑','Glúteo em foco'],['ob','🎯','Ombros e braços'],['co','🧱','Abdômen e core']];
+const QDIV={2:[['fb','Corpo todo (A e B)',['fb','fb']],['ul','Superior / Inferior',['U','L']],['gl','Pernas e glúteo / Superiores',['pg','U']]],
+ 3:[['fb','Corpo todo (A, B e C)',['fb','fb','fb']],['ppl','Empurrar / Puxar / Pernas',['P','Pu','Lg']],['ulf','Superior / Inferior / Corpo todo',['U','L','fb']],['abc','Peito e tríceps / Costas e bíceps / Pernas',['pt','cb','pg']]],
+ 4:[['ul','Superior / Inferior (2x)',['U','L','U','L']],['abcd','Peito / Costas / Pernas / Ombros e braços',['pt','cb','pg','ob']],['fb','Corpo todo (A a D)',['fb','fb','fb','fb']]],
+ 5:[['abcde','Peito / Costas / Pernas / Ombros e braços / Glúteo e core',['pt','cb','pg','ob','gl']],['pplul','Empurrar / Puxar / Pernas / Superior / Inferior',['P','Pu','Lg','U','L']]]};
+const QNAME={fb:'Corpo todo',U:'Superiores',L:'Inferiores',P:'Empurrar',Pu:'Puxar',Lg:'Pernas',pt:'Peito e tríceps',cb:'Costas e bíceps',pg:'Pernas e glúteos',gl:'Glúteo',ob:'Ombros e braços',co:'Abdômen e core'};
+const QWHERE=[['gym','🏢','Academia'],['casa','🏠','Em casa, sem nada'],['halter','🏋️','Em casa, com halteres/elástico']];
+const QENF=[['glute','🍑 Glúteo'],['core','🧱 Abdômen'],['arms','💪 Braços'],['shoulders','🎯 Ombros'],['trap','🔺 Trapézio'],['calves','🦶 Panturrilha']];
+function qbDefault(){const P=PROFILE;const q=P.qb||{};return{n:q.n||1,foco:q.foco||'fb',div:q.div||'fb',min:q.min||P.min||60,onde:q.onde||((P.equip||[]).includes('maq')?'gym':'halter'),enf:q.enf||[...(P.focus||[])].filter(f=>QENF.some(x=>x[0]===f))}}
+function quickBuilder(){
+  QB=QB||qbDefault();const P=PROFILE;
+  const pill=(attr,v,on,l)=>`<button class="qbp ${on?'on':''}" data-${attr}="${v}" aria-pressed="${on}">${l}</button>`;
+  const divs=QDIV[QB.n]||[];if(QB.n>1&&!divs.some(d=>d[0]===QB.div))QB.div=divs[0][0];
+  openSheet(`<div class="shead"><button class="rbtn" id="qbX" aria-label="Fechar">${I.x}</button><span class="t">Montar ficha</span><span style="width:44px"></span></div>
+    <button class="qbobj" id="qbObj"><span class="grow"><small>Seu objetivo</small><b>${esc(OBJ[P.obj]||'')}</b><small>Nível ${esc((LEVEL[P.level]||'').toLowerCase())} · séries e repetições seguem isso</small></span><span class="pill ghost">Mudar</span></button>
+    <div class="lbl">Quantas fichas?</div><div class="qbrow">${[1,2,3,4,5].map(n=>pill('n',n,QB.n===n,n===1?'1 ficha':n+' fichas')).join('')}</div>
+    ${QB.n===1?`<div class="lbl">Foco do treino</div><div class="qbgrid">${QFOCO.map(([k,e,l])=>`<button class="qbc ${QB.foco===k?'on':''}" data-foco="${k}"><span aria-hidden="true">${e}</span>${l}</button>`).join('')}</div>`
+      :`<div class="lbl">Divisão</div><div class="qopts">${divs.map(([k,l,ds])=>`<button class="qopt ${QB.div===k?'on':''}" data-div="${k}"><span class="grow qbdv"><b>${esc(l)}</b><small>${ds.map((d,i)=>'ABCDE'[i]+': '+QNAME[d]).join(' · ')}</small></span><span class="qr"></span></button>`).join('')}</div>`}
+    <div class="lbl">Tempo por treino</div><div class="qbrow">${[30,45,60,75,90].map(m=>pill('min',m,QB.min===m,m+' min')).join('')}</div>
+    <div class="lbl">Onde você vai treinar</div><div class="qbrow wrap">${QWHERE.map(([k,e,l])=>pill('onde',k,QB.onde===k,e+' '+l)).join('')}</div>
+    <div class="lbl">Dar mais atenção a <small class="muted">(opcional)</small></div><div class="qbrow wrap">${QENF.map(([k,l])=>pill('enf',k,QB.enf.includes(k),l)).join('')}</div>
+    <button class="bigcta" id="qbGo">Montar ${QB.n>1?'fichas':'ficha'}</button>
+    <button class="qbzero" id="qbZero">✍️ Prefiro montar do zero, exercício por exercício</button>
+    <p class="muted hint" style="text-align:center">Sai na hora, sem internet e sem IA. Respeita suas dores, os exercícios que você evita e os aparelhos da sua academia.</p>`);
+  const q=id=>document.getElementById(id);q('qbX').onclick=closeSheet;q('qbObj').onclick=()=>{objSheetFrom=quickBuilder;objSheet()};
+  const st=()=>{const y=sheet.scrollTop;quickBuilder();sheet.scrollTop=y};
+  sheet.querySelectorAll('[data-n]').forEach(b=>b.onclick=()=>{QB.n=+b.dataset.n;st()});
+  sheet.querySelectorAll('[data-foco]').forEach(b=>b.onclick=()=>{QB.foco=b.dataset.foco;st()});
+  sheet.querySelectorAll('[data-div]').forEach(b=>b.onclick=()=>{QB.div=b.dataset.div;st()});
+  sheet.querySelectorAll('[data-min]').forEach(b=>b.onclick=()=>{QB.min=+b.dataset.min;st()});
+  sheet.querySelectorAll('[data-onde]').forEach(b=>b.onclick=()=>{QB.onde=b.dataset.onde;st()});
+  sheet.querySelectorAll('[data-enf]').forEach(b=>b.onclick=()=>{const k=b.dataset.enf;QB.enf=QB.enf.includes(k)?QB.enf.filter(x=>x!==k):[...QB.enf,k];st()});
+  q('qbZero').onclick=()=>{closeSheet();setTimeout(newRoutineZero,250)};
+  q('qbGo').onclick=()=>{PROFILE.qb=Object.assign({},QB);saveProfile();qbPreview(qbBuild())};
+}
+let objSheetFrom=null;
+function qbBuild(){
+  const P=PROFILE;const keep={min:P.min,focus:P.focus,equip:P.equip,cardio:P.cardio};
+  const days=QB.n===1?[QB.foco]:((QDIV[QB.n]||[]).find(d=>d[0]===QB.div)||QDIV[QB.n][0])[2];
+  try{P.min=QB.min;P.focus=[...QB.enf];P.cardio=0;
+    QB_HOME=QB.onde==='casa'?['corpo','elas']:QB.onde==='halter'?['corpo','halter','elas','kb']:null;
+    if(QB_HOME)P.equip=[...QB_HOME];
+    let prev=[];const cnt={};
+    return days.map(dt=>{cnt[dt]=(cnt[dt]||0);const g=generate(dt,cnt[dt]++,prev);prev=prev.concat(g.ex.map(exKey));
+      return{dt,ex:g.ex.map(e=>({id:nid(),key:e.key,name:e.name,img:e.img,sets:e.sets,reps:e.reps,note:e.note||'',slot:e.slot}))}})}
+  finally{P.min=keep.min;P.focus=keep.focus;P.equip=keep.equip;P.cardio=keep.cardio;QB_HOME=null}
+}
+function qbPreview(F){
+  const L='ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');const used=new Set(plan.routines.map(r=>r.letter));
+  const letters=F.map(()=>{const c=L.find(x=>!used.has(x))||'★';used.add(c);return c});
+  const where=QB.onde==='gym'?'':QB.onde==='casa'?' · em casa':' · em casa c/ halteres';
+  openSheet(`<div class="shead"><button class="rbtn" id="qpB" aria-label="Voltar">${I.back}</button><span class="t">${F.length>1?'Suas fichas':'Sua ficha'}</span><button class="pill glass" id="qpR">🔀 Outra</button></div>
+    <p class="muted hint" style="margin:0 4px 6px">${esc(OBJ[PROFILE.obj])} · ~${QB.min} min${where}. Toque em 🔀 para trocar um exercício.</p>
+    ${F.map((f,fi)=>`<div class="lbl">${letters[fi]} · ${esc(QNAME[f.dt]||'Treino')} <small class="muted">${f.ex.length} exercícios · ~${estMin(f.ex)} min</small></div>
+      <div class="qbl">${f.ex.map((e,i)=>`<div class="qbx">${thumbHTML(e.img)}<div class="grow"><b>${esc(e.name)}</b><small>${esc(detail(e))}</small></div><button class="rbtn" data-sw="${fi}:${i}" aria-label="Trocar ${esc(e.name)}">🔀</button></div>`).join('')||'<div class="empty">Não achei exercícios com essas opções.</div>'}</div>`).join('')}
+    <button class="bigcta" id="qpOk">Salvar ${F.length>1?'as fichas':'a ficha'}</button>
+    ${plan.routines.length?`<button class="bigcta dark" id="qpRep">Substituir minhas fichas atuais</button>`:''}
+    <p class="foot">Seu histórico de treinos e cargas não é apagado.</p>`);
+  const q=id=>document.getElementById(id);q('qpB').onclick=quickBuilder;q('qpR').onclick=()=>qbPreview(qbBuild());
+  sheet.querySelectorAll('[data-sw]').forEach(b=>b.onclick=()=>{const [fi,i]=b.dataset.sw.split(':').map(Number);const e=F[fi].ex[i];
+    swapSheet(e,k=>{const L=LIBX[k];if(!L)return;const ne=mkEx(L);F[fi].ex[i]={id:nid(),key:ne.key,name:ne.name,img:ne.img,sets:e.sets,reps:e.reps,note:'',slot:ne.slot};const y=0;qbPreview(F)})});
+  const save=rep=>{const rs=F.map((f,fi)=>({id:nid(),letter:letters[fi],name:(F.length>1?'Treino '+letters[fi]+' · ':'')+(QNAME[f.dt]||'Treino'),ex:f.ex.filter(e=>e.key).map(e=>({id:nid(),key:e.key,name:e.name,img:e.img,sets:e.sets,reps:e.reps,note:e.note||'',v:''}))})).filter(r=>r.ex.length);
+    if(!rs.length){toast('Nada para salvar');return}
+    if(rep){if(!confirm('Substituir todas as suas fichas por estas?'))return;rs.forEach((r,i)=>{r.letter='ABCDEFGHIJ'[i];r.name=r.name.replace(/^Treino [A-Z★] /,'Treino '+r.letter+' ')});plan.routines=rs}else plan.routines.push(...rs);
+    PROFILE.planAt=today();saveProfile();savePlan();localStorage.removeItem(PVK);closeSheet();tab='fichas';view={name:'home'};render();toast(rs.length>1?rs.length+' fichas prontas 💪':'Ficha pronta 💪')};
+  q('qpOk').onclick=()=>save(false);if(q('qpRep'))q('qpRep').onclick=()=>save(true);
+}
+const newRoutineZero=newRoutine;
+newRoutine=function(){quickBuilder()};
+/* objetivo: voltar para o montador quando veio de lá */
+const _objSheet=objSheet;
+objSheet=function(){const from=objSheetFrom;objSheetFrom=null;_objSheet();if(from)sheet.querySelectorAll('[data-o]').forEach(b=>b.onclick=()=>{PROFILE.obj=b.dataset.o;saveProfile();localStorage.removeItem(PVK);toast('Objetivo: '+OBJ[PROFILE.obj]);from()})};
+/* Fichas: card do montador no lugar do "Montar fichas com IA" */
+const _renderFichas=renderFichas;
+renderFichas=function(){_renderFichas();try{const a=document.getElementById('fAI');if(a){a.outerHTML=`<button class="aicard" id="fQB" style="margin:0 0 14px"><span class="aisp" style="font-size:24px">⚡</span><span class="grow"><b>Montar ficha nova</b><small>Escolha o foco, o tempo e onde vai treinar. Sai na hora, de acordo com seu objetivo.</small></span><span class="chev">${I.chev}</span></button>`;document.getElementById('fQB').onclick=quickBuilder}}catch(e){}};
+
 /* ================= boot ================= */
 loadAuth();migrate();setTimeout(glassMigrate,0);setTimeout(fichaView,300);
 document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>setTab(t.dataset.tab));
@@ -4213,8 +4324,10 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden){if(AUTH)s
 setTimeout(()=>{const s=document.getElementById('splash');s.classList.add('hide');setTimeout(()=>s.remove(),500)},matchMedia('(prefers-reduced-motion: reduce)').matches?300:1300);
 if(AUTH)setTimeout(()=>sync(),800);
 /* v14: novidades da versão */
-const APPVER='17';
-const NOVS=[['👯','Galera','Crie um clube, chame os amigos, faça check-in e dispute o ranking da semana. Aba Galera (a Nutri foi pro menu).'],
+const APPVER='17.1';
+const NOVS=[['⚡','Montar ficha nova em segundos','Em Fichas: escolha o foco, o tempo e onde vai treinar. Sai na hora, de acordo com seu objetivo, sem IA.'],
+ ['🍎','Nutri de volta na barra','O Coach saiu; a Nutri voltou para a barra de baixo.'],
+ ['👯','Galera','Crie um clube, chame os amigos, faça check-in e dispute o ranking da semana. Aba Galera.'],
  ['📚','Biblioteca com 870+ exercícios','Em casa, força, mobilidade, cardio e programas prontos novos. No menu.'],
  ['🎯','Mudar objetivo e renovar ficha','Na tela inicial, com programas recomendados na hora.'],
  ['🏆','Recorde ao alcance e treino de retorno','O app avisa quando dá pra bater recorde e quando é melhor voltar com calma.'],
@@ -4232,13 +4345,10 @@ const NOVS=[['👯','Galera','Crie um clube, chame os amigos, faça check-in e d
  ['👋','Boas-vindas do seu jeito','Ela, Ele ou neutro: escolha uma vez e o app fala com você do seu jeito.'],
  ['👈','Remover exercício','No treino em andamento, arraste o exercício para a esquerda. Dá para desfazer.'],
  ['✉️','Fale com a gente','Dúvida ou ideia? No menu, vai direto pro nosso e-mail.'],
- ['💬','Coach','Converse com a IA sobre seu treino, sua semana e alimentação. Na aba Coach.'],
- ['✨','Ajustar o treino com IA','Peça "inclui tríceps" ou "só tenho 30 min" e a IA refaz o treino de hoje.'],
  ['🔔','Notificações','Lembrete na hora do treino, ofensiva em risco e resumo da semana. No menu.'],
  ['👩','Perfil Ela, Ele ou Neutro','Cores, saudações e sugestões para cada perfil. Em Ajustes.'],
  ['💤','Folga sem perder a ofensiva','Um toque na tela inicial.'],
- ['🔁','Variação inteligente','O treino do dia troca primeiro a pegada e só depois o exercício.'],['✨','Coach dentro do treino','Toque em Coach na tela do treino, peça a mudança e a lista atualiza na hora.'],
- ['⚠️','Aviso de grupo faltando','Se um músculo não entrou na semana, o app avisa e inclui.'],
+ ['🔁','Variação inteligente','O treino do dia troca primeiro a pegada e só depois o exercício.'],['⚠️','Aviso de grupo faltando','Se um músculo não entrou na semana, o app avisa e inclui.'],
  ['🧘','Mobilidade antes do treino','5 minutos com animação e passo a passo.'],
  ['✋','Novos puxadores','Foto do puxador e animação certa para cada pegada.'],
  ['🎉','Tela final e Stories novos','Com foto, filtros, emojis e você escolhe o que aparece.'],
@@ -4251,12 +4361,12 @@ function setGlassBg(t){try{if(typeof IMG==='undefined')return;t=t||themeGet();co
 function glassMigrate(){try{if(PROFILE&&!PROFILE.glassMig){PROFILE.glassMig=1;PROFILE.theme=Object.assign({},PROFILE.theme||{},{mode:'vidro'});saveProfile();applyTheme(PROFILE.theme,false)}else setGlassBg()}catch(e){}}
 /* ================= v16.1: ajustar treino sem IA ================= */
 function ajusteSheet(){
-  const pv=getPreview();if(!pv||!pv.ex||!pv.ex.length){go({name:'coach',ajuste:true});return}
+  const pv=getPreview();if(!pv||!pv.ex||!pv.ex.length){toast('Escolha um treino para hoje primeiro');return}
   const it=(id,e,t,d)=>`<button class="mi" id="${id}"><span class="ico" aria-hidden="true">${e}</span><span class="grow"><b>${t}</b><small>${d}</small></span>${I.chev}</button>`;
   openSheet(`<div class="shead"><span style="width:44px"></span><span class="t">Ajustar o treino de hoje</span><button class="rbtn" id="ajX" aria-label="Fechar">${I.x}</button></div>
     <p class="muted hint" style="margin:0 4px 12px">Muda só o treino de hoje, na hora e sem precisar de internet.</p>
     <div class="mlist ajl">${it('ajTroca','🔀','Trocar um exercício','Opções do mesmo músculo, da sua academia')}${it('ajTempo','⏱️','Tenho pouco tempo','Versão de 30 ou 45 minutos')}${it('ajOcup','🏋️','Aparelho ocupado','Troca por outro que trabalha o mesmo')}${it('ajDor','🩹','Tô com dor','Tira o que força a região')}${it('ajMais','🔥','Quero mais intenso','+1 série nos exercícios')}</div>
-    <button class="ajcoach" id="ajCoach">💬 <span class="grow"><b>Perguntar ao Coach</b><small>Para dúvidas · usa IA, pode demorar</small></span>${I.chev}</button>`);
+`);
   const q=id=>document.getElementById(id);q('ajX').onclick=closeSheet;
   const done=msg=>{ss(PVK,pv);closeSheet();animOn=false;render();animOn=true;toast(msg)};
   const pickEx=(title)=>openSheet(`<div class="shead"><button class="rbtn" id="peB" aria-label="Voltar">${I.back}</button><span class="t">${title}</span><span style="width:44px"></span></div>
@@ -4277,7 +4387,6 @@ function ajusteSheet(){
       <button class="bigcta" id="dOk">Ajustar treino</button>`);
     q('dB').onclick=ajusteSheet;sheet.querySelectorAll('[data-l]').forEach(b=>b.onclick=()=>{const k=b.dataset.l;cur.has(k)?cur.delete(k):cur.add(k);b.classList.toggle('on',cur.has(k));b.setAttribute('aria-pressed',cur.has(k))});
     q('dOk').onclick=()=>{PROFILE.limits=[...cur];saveProfile();getPreview(true,pv.pick?pv.rid:undefined);closeSheet();animOn=false;render();animOn=true;toast('Treino ajustado. Melhoras!')}};
-  q('ajCoach').onclick=()=>{closeSheet();setTimeout(()=>go({name:'coach',ajuste:true}),200)};
 }
 /* ================= v16.1: loja em breve ================= */
 function lojaSheet(){openSheet(`<div class="shead"><span style="width:44px"></span><span class="t">Loja</span><button class="rbtn" id="ljX" aria-label="Fechar">${I.x}</button></div>
