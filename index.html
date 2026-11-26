@@ -875,7 +875,7 @@ html[data-glass="1"][data-rm="1"] body::after{filter:brightness(.4)}
 .fl{position:absolute;top:10px;padding:5px 10px;border-radius:99px;background:rgba(0,0,0,.55);color:#fff;font-size:12px;font-weight:600}.fl.l{left:10px}.fl.r{right:10px}
 #frng{width:100%;margin-top:10px;accent-color:var(--lime)}
 .fgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:12px}.fgrid button{position:relative;aspect-ratio:3/4;border-radius:12px;overflow:hidden}.fgrid img{width:100%;height:100%;object-fit:cover}.fgrid small{position:absolute;left:0;right:0;bottom:0;background:rgba(0,0,0,.55);color:#fff;font-size:10.5px;padding:2px}
-.fview{position:fixed;inset:0;z-index:60;overflow:auto;background:var(--bg);color:var(--text)}.fvin{max-width:560px;margin:0 auto;padding:24px 18px 40px}
+.fview{position:fixed;inset:0;z-index:19;overflow:auto;background:var(--bg);color:var(--text)}.fvin{max-width:560px;margin:0 auto;padding:24px 18px 40px}
 .fvtop{display:flex;align-items:center;gap:8px;font-weight:900;letter-spacing:.18em;font-size:14px}.fvtop span{color:var(--lime)}.fvmk{width:44px;height:44px}
 .fview h1{font-size:30px;margin:18px 0 4px}.fvr{margin-top:18px}.fvr h2{display:flex;align-items:center;gap:10px;font-size:19px;margin:0 0 8px}.fvr h2 span{width:34px;height:34px;border-radius:10px;background:var(--lime);color:#fff;display:grid;place-items:center;font-size:16px}
 .fvx{display:flex;gap:12px;align-items:center;padding:10px 12px;border-radius:16px;background:var(--card);border:1px solid var(--line);margin-bottom:6px}.fvx i{font-style:normal;color:var(--muted);width:18px}.fvx b{display:block}.fvx small{color:var(--muted)}
@@ -3994,8 +3994,30 @@ function fichaView(){
     <h1>Ficha${p.n?' de '+esc(p.n):''}</h1><p class="muted">${p.o&&OBJ[p.o]?'Objetivo: '+esc(OBJ[p.o])+' · ':''}${p.r.length} ficha${p.r.length>1?'s':''}</p>
     ${p.r.map(r=>`<div class="fvr"><h2><span>${esc(r.l||'')}</span>${esc(r.n||'')}</h2>${r.e.map(([k,n,s,rp,v,nt],i)=>`<div class="fvx"><i>${i+1}</i><div class="grow"><b>${esc(n)}</b><small>${esc([s&&rp?s+' × '+rp:rp||s,v&&VG&&Object.values(VG).flat().find(x=>x[0]===v)?Object.values(VG).flat().find(x=>x[0]===v)[1]:'',nt].filter(Boolean).join(' · '))}</small></div></div>`).join('')}</div>`).join('')}
     <a class="bigcta" href="https://wa.me/?text=${encodeURIComponent('Sobre a sua ficha do My Training, minhas sugestões: ')}" target="_blank" rel="noopener">Mandar sugestões pelo WhatsApp</a>
-    <button class="bigcta dark" id="fvImp">Abrir o My Training</button></div>`;
-  document.body.appendChild(d);document.getElementById('fvImp').onclick=()=>{location.hash='';d.remove();render()};return true}
+    <button class="bigcta" id="fvUse">Usar estas fichas no meu app</button>
+    <button class="bigcta dark" id="fvImp">Só abrir o My Training</button></div>`;
+  document.body.appendChild(d);const close=()=>{history.replaceState(null,'',location.pathname);d.remove();render()};document.getElementById('fvImp').onclick=close;
+  document.getElementById('fvUse').onclick=()=>fichaImport(p,close);return true}
+function importLinkSheet(){openSheet(`<div class="shead"><button class="rbtn" id="ilB" aria-label="Voltar">${I.back}</button><span class="t">Importar fichas por link</span><span style="width:44px"></span></div>
+  <label class="fld"><span>Cole o link aqui</span><textarea id="ilT" rows="4" placeholder="https://training-core.github.io/app/#ficha=..."></textarea></label><button class="bigcta" id="ilOk">Ver fichas</button>`);
+  const q=id=>document.getElementById(id);q('ilB').onclick=contaSheet;
+  q('ilOk').onclick=()=>{const m=q('ilT').value.match(/ficha=([\w-]+)/);if(!m){toast('Link inválido');return}closeSheet();history.replaceState(null,'',location.pathname+'#ficha='+m[1]);if(!fichaView())toast('Não consegui ler esse link')}}
+function fichaImport(p,close){
+  const av=(p.av||[]).filter(k=>LIBX[k]);const has=plan.routines.length;
+  openSheet(`<div class="shead"><span style="width:44px"></span><span class="t">Usar estas fichas</span><button class="rbtn" id="fiX" aria-label="Fechar">${I.x}</button></div>
+    <p class="muted hint" style="margin:0 4px 12px">${p.r.length} ficha${p.r.length>1?'s':''} com as pegadas já marcadas. Seu histórico de treinos e cargas continua.</p>
+    ${av.length?`<label class="remember"><input type="checkbox" id="fiAv" checked><span>Não usar nas trocas e variações: ${av.map(k=>esc(LIBX[k].n)).join(', ')}</span></label>`:''}
+    <button class="bigcta" id="fiRep">${has?'Substituir minhas fichas atuais':'Salvar as fichas'}</button>${has?'<button class="bigcta dark" id="fiAdd">Adicionar junto das minhas</button>':''}`);
+  const q=id=>document.getElementById(id);q('fiX').onclick=closeSheet;
+  const go2=rep=>{const L='ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');const used=new Set(rep?[]:plan.routines.map(r=>r.letter));
+    const rs=p.r.map(r=>{let l=r.l&&!used.has(r.l)?r.l:(L.find(c=>!used.has(c))||'★');used.add(l);
+      return{id:nid(),letter:l,name:r.n||('Treino '+l),ex:r.e.map(([k,n,st,rp,v,nt])=>({id:nid(),key:LIBX[k]?k:null,img:LIBX[k]?k:null,name:n,sets:String(st||''),reps:String(rp||''),v:v||'',note:nt||''}))}});
+    if(rep&&has&&!confirm('Substituir todas as suas fichas por estas?'))return;
+    if(rep)plan.routines=rs;else plan.routines.push(...rs);
+    if(q('fiAv')&&q('fiAv').checked){PROFILE.avoid=[...new Set([...(PROFILE.avoid||[]),...av])]}
+    PROFILE.planAt=today();saveProfile();savePlan();localStorage.removeItem(PVK);closeSheet();close();tab='fichas';view={name:'home'};render();toast(rs.length+' fichas prontas 💪')};
+  q('fiRep').onclick=()=>go2(true);if(q('fiAdd'))q('fiAdd').onclick=()=>go2(false);
+}
 
 /* ---------- Conta, termos, privacidade, cookies ---------- */
 const TERMSV2='2.0';
@@ -4016,10 +4038,10 @@ function txtSheet(html,back){openSheet(`<div class="shead"><button class="rbtn" 
 function contaSheet(){
   const it=(id,e,t,d,cls='')=>`<button class="mi ${cls}" id="${id}"><span class="ico" aria-hidden="true">${e}</span><span class="grow"><b>${t}</b><small>${d}</small></span>${I.chev}</button>`;
   openSheet(`<div class="shead"><span style="width:44px"></span><span class="t">Conta e privacidade</span><button class="rbtn" id="ctX" aria-label="Fechar">${I.x}</button></div>
-    <div class="mlist ajl">${it('ctT','📄','Termos de uso','Versão '+TERMSV2)}${it('ctP','🔒','Política de privacidade','O que guardamos e por quê')}${it('ctD','⬇️','Baixar meus dados','Arquivo .json com tudo')}${it('ctPer','🧑‍🏫','Mandar ficha pro personal','Link só de leitura')}</div>
+    <div class="mlist ajl">${it('ctT','📄','Termos de uso','Versão '+TERMSV2)}${it('ctP','🔒','Política de privacidade','O que guardamos e por quê')}${it('ctD','⬇️','Baixar meus dados','Arquivo .json com tudo')}${it('ctPer','🧑‍🏫','Mandar ficha pro personal','Link só de leitura')}${it('ctImp','🔗','Importar fichas por link','Cole o link que te mandaram')}</div>
     <div class="mlist ajl" style="margin-top:12px">${AUTH?it('ctDel','🗑️','Excluir minha conta','Apaga tudo da nuvem e deste aparelho','red'):it('ctDel','🗑️','Apagar meus dados deste aparelho','Você está sem conta','red')}</div>`);
   const q=id=>document.getElementById(id);q('ctX').onclick=closeSheet;
-  q('ctT').onclick=()=>txtSheet(TXT_TERMOS,contaSheet);q('ctP').onclick=()=>txtSheet(TXT_PRIV,contaSheet);q('ctPer').onclick=personalSheet;
+  q('ctT').onclick=()=>txtSheet(TXT_TERMOS,contaSheet);q('ctP').onclick=()=>txtSheet(TXT_PRIV,contaSheet);q('ctPer').onclick=personalSheet;q('ctImp').onclick=importLinkSheet;
   q('ctD').onclick=()=>{const data={app:'My Training',versao:APPVER,exportado:new Date().toISOString(),conta:AUTH?AUTH.user.email:null,perfil:PROFILE,fichas:plan,treinos:SES,medidas:MED};
     const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='my-training-dados-'+today()+'.json';document.body.appendChild(a);a.click();a.remove();toast('Arquivo baixado')};
   q('ctDel').onclick=()=>{openSheet(`<div class="shead"><button class="rbtn" id="dlB" aria-label="Voltar">${I.back}</button><span class="t">Excluir conta</span><span style="width:44px"></span></div>
@@ -4324,8 +4346,9 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden){if(AUTH)s
 setTimeout(()=>{const s=document.getElementById('splash');s.classList.add('hide');setTimeout(()=>s.remove(),500)},matchMedia('(prefers-reduced-motion: reduce)').matches?300:1300);
 if(AUTH)setTimeout(()=>sync(),800);
 /* v14: novidades da versão */
-const APPVER='17.1';
-const NOVS=[['⚡','Montar ficha nova em segundos','Em Fichas: escolha o foco, o tempo e onde vai treinar. Sai na hora, de acordo com seu objetivo, sem IA.'],
+const APPVER='17.2';
+const NOVS=[['🔗','Importar fichas por link','Abriu um link de ficha (do personal ou do suporte)? Toque em “Usar estas fichas” e elas entram no app com as pegadas.'],
+ ['⚡','Montar ficha nova em segundos','Em Fichas: escolha o foco, o tempo e onde vai treinar. Sai na hora, de acordo com seu objetivo, sem IA.'],
  ['🍎','Nutri de volta na barra','O Coach saiu; a Nutri voltou para a barra de baixo.'],
  ['👯','Galera','Crie um clube, chame os amigos, faça check-in e dispute o ranking da semana. Aba Galera.'],
  ['📚','Biblioteca com 870+ exercícios','Em casa, força, mobilidade, cardio e programas prontos novos. No menu.'],
